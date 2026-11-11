@@ -593,3 +593,362 @@
     scroll-behavior: auto !important;
   }
 }
+/* =====================================================
+   SKILLS ENHANCEMENTS  (v4)
+   1. DELETE the block you pasted last time at the end of skills.scss
+   2. Paste this one at the very END of the file
+   3. Optional clean-up: the old .skills-sidebar, .sidebar-*, .category-button,
+      .category-number, .category-name, .category-count, .pulse-dot and
+      .orbit-node styles are no longer used
+   ===================================================== */
+
+/* ---------- Heading accent: slow moving gradient ---------- */
+.skills-heading h2 span {
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan), var(--accent-purple));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: text-shine 6s linear infinite;
+}
+
+@keyframes text-shine {
+  to { background-position: 200% center; }
+}
+
+/* ---------- Layout: one compact panel, technologies left, spotlight right ---------- */
+.skills-workspace {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.skills-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 24px;
+  align-items: stretch;
+  padding: 22px;
+}
+
+.skills-panel {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-description {
+  margin-bottom: 20px;
+}
+
+/* ---------- Category switcher: full-width segmented control ---------- */
+.skills-tabs {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(max-content, 1fr);
+  gap: 2px;
+  width: 100%;
+  margin-bottom: 24px;
+  padding: 5px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border: 1px solid #ffffff12;
+  border-radius: 12px;
+  background: #ffffff06;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tab-indicator {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 0;
+  width: 0;
+  border: 1px solid #9875f55a;
+  border-radius: 8px;
+  background: linear-gradient(100deg, #9875f533, #9875f512);
+  box-shadow: 0 0 22px #9875f51f;
+  pointer-events: none;
+}
+
+.tab {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 11px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.25s ease;
+
+  &:hover {
+    color: white;
+  }
+
+  &.active {
+    color: white;
+
+    .tab-icon {
+      color: var(--accent-cyan);
+    }
+
+    .tab-count {
+      color: white;
+      background: #9875f540;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: -2px;
+  }
+}
+
+.tab-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: color 0.25s ease;
+}
+
+.tab-count {
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 6px;
+  background: #ffffff0a;
+  color: var(--text-muted);
+  font: 10px var(--font-code);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+/* ---------- Technology cards: compact rows (logo + name + level) ---------- */
+.skills-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.skill-card {
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  min-height: 0;
+  padding: 15px 16px;
+}
+
+.skill-card:hover {
+  transform: translateY(-3px);
+}
+
+.skill-meta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.skill-level-text {
+  color: var(--text-muted);
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* cursor-following glow (position set from skills.ts) */
+.skill-card::before {
+  background: radial-gradient(160px circle at var(--mx, 25%) var(--my, 0%), #9875f52e, transparent 75%);
+}
+
+/* ---------- Spotlight: vertical card on the right ---------- */
+.skill-spotlight {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  min-height: 0;
+  margin-top: 0;
+  padding: 22px 22px 26px;
+  text-align: center;
+  animation: none; /* GSAP handles the entrance */
+}
+
+.spotlight-stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 150px;
+}
+
+.spotlight-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+
+  img {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+.spotlight-content {
+  flex: none;
+  width: 100%;
+
+  h4 {
+    font-size: 22px;
+  }
+
+  p {
+    max-width: 34ch;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 12px;
+  }
+}
+
+.skill-level {
+  margin-top: 14px;
+}
+
+.spotlight-index {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  align-self: auto;
+}
+
+/* ---------- Orbit: two rings that turn in opposite directions, always running ---------- */
+.skills-orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.orbit-ring {
+  position: absolute;
+  border: 1px solid #ffffff0f; /* faint track */
+  border-radius: 50%;
+
+  /* comet tail */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 0 60%, var(--ring-color) 100%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1.5px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1.5px));
+  }
+
+  /* glowing head */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    margin-left: -2.5px;
+    border-radius: 50%;
+    background: var(--ring-color);
+    box-shadow: 0 0 10px var(--ring-color);
+  }
+}
+
+.orbit-ring-one {
+  --ring-color: var(--accent-cyan);
+  width: 108px;
+  height: 108px;
+  top: -54px;
+  left: -54px;
+  animation: orbit-cw 9s linear infinite;
+}
+
+.orbit-ring-two {
+  --ring-color: var(--accent-purple);
+  width: 144px;
+  height: 144px;
+  top: -72px;
+  left: -72px;
+  animation: orbit-ccw 14s linear infinite;
+
+  /* tail on the other side, because this ring turns the other way */
+  &::after {
+    background: conic-gradient(from 0deg, var(--ring-color) 0, transparent 40%);
+  }
+}
+
+@keyframes orbit-cw  { to { transform: rotate(360deg); } }
+@keyframes orbit-ccw { to { transform: rotate(-360deg); } }
+
+/* ---------- Responsive (largest breakpoint first, so smaller ones win) ---------- */
+@media (max-width: 1350px) {
+  .skills-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1000px) {
+  .skills-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 750px) {
+  .skills-main {
+    padding: 16px;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 450px) {
+  .skills-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tab {
+    padding: 11px 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-ring,
+  .skills-heading h2 span {
+    animation: none !important;
+  }
+}

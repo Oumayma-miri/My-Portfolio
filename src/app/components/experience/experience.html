@@ -1,0 +1,133 @@
+<section class="exp-section" id="journey" #expRoot>
+
+  <!-- SECTION HEADING -->
+  <div class="exp-heading">
+    <div class="section-label">
+      <span class="label-dot"></span>
+      // MY JOURNEY
+    </div>
+
+    <h2>Hands-on experience, <span>real projects.</span></h2>
+
+    <p>
+      Internships and activities where I turned what I learned
+      into working software.
+    </p>
+  </div>
+
+  <!-- EXPERIENCE SWITCHER -->
+  <div class="exp-tabs" role="tablist" aria-label="Experiences">
+    <span class="exp-indicator" aria-hidden="true"></span>
+
+    @for (item of experiences; track item.company; let i = $index) {
+      <button
+        type="button"
+        role="tab"
+        class="exp-tab"
+        [class.active]="activeIndex() === i"
+        [attr.aria-selected]="activeIndex() === i"
+        (click)="select(i)">
+
+        <svg class="exp-tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path [attr.d]="tabIcon" />
+        </svg>
+
+        <span class="exp-tab-text">
+          <span class="exp-tab-name">{{ item.company }}</span>
+          <span class="exp-tab-period">{{ item.period }}</span>
+        </span>
+
+      </button>
+    }
+  </div>
+
+  <!-- EXPERIENCE DETAIL -->
+  <article class="exp-card">
+
+    <header class="exp-header exp-anim">
+
+      <div>
+        <span class="eyebrow">PROJECT: {{ current.project }}</span>
+        <h3>{{ current.role }}</h3>
+        <span class="exp-company">{{ current.company }} · {{ current.location }}</span>
+      </div>
+
+      <span class="exp-period">
+        <span class="exp-period-dot"></span>
+        {{ current.period }}
+      </span>
+
+    </header>
+
+    <p class="exp-summary exp-anim">{{ current.summary }}</p>
+
+    <div class="exp-body">
+
+      <div class="exp-tasks exp-anim">
+        <span class="exp-label">WHAT I DID</span>
+
+        <ul>
+          @for (task of current.tasks; track $index) {
+            <li class="exp-task">{{ task }}</li>
+          }
+        </ul>
+      </div>
+
+      <div class="exp-side exp-anim">
+
+        <span class="exp-label">STACK</span>
+
+        <div class="exp-chips">
+          @for (tech of current.stack; track tech) {
+            <span class="exp-chip">{{ tech }}</span>
+          }
+        </div>
+
+        @if (current.highlights; as items) {
+          <div class="exp-metrics">
+            @for (h of items; track h.label) {
+              <div class="exp-metric">
+                <span class="exp-metric-value">{{ h.value }}</span>
+                <span class="exp-metric-label">{{ h.label }}</span>
+              </div>
+            }
+          </div>
+        }
+
+        @if (current.link; as link) {
+          <a class="exp-link" [href]="link.url" target="_blank" rel="noopener noreferrer">
+            {{ link.label }} ↗
+          </a>
+        }
+
+      </div>
+
+    </div>
+
+  </article>
+
+  <!-- ACHIEVEMENTS -->
+  <div class="ach-head">
+    <span class="eyebrow">BEYOND THE CLASSROOM</span>
+    <h3>Achievements &amp; activities</h3>
+  </div>
+
+  <div class="ach-grid">
+    @for (a of achievements; track $index) {
+      <article class="ach-card">
+
+        <span class="ach-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path [attr.d]="a.icon" />
+          </svg>
+        </span>
+
+        <h4>{{ a.title }}</h4>
+        <p>{{ a.text }}</p>
+        <span class="ach-meta">{{ a.meta }}</span>
+
+      </article>
+    }
+  </div>
+
+</section>

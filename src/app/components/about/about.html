@@ -1,0 +1,99 @@
+<section class="about-section" id="about" #aboutRoot>
+
+  <!-- SECTION HEADING -->
+  <div class="about-heading">
+    <div class="section-label">
+      <span class="label-dot"></span>
+      // ABOUT ME
+    </div>
+
+    <h2>
+      <span class="heading-static">Developer, designer,  </span>
+      <span class="rotating-phrase">{{ currentPhrase() }}</span>
+    </h2>
+
+    <p>
+      A short introduction to who I am, how I work and where I am
+      coming from.
+    </p>
+  </div>
+
+  <div class="about-grid">
+
+    <!-- WHO I AM -->
+    <article class="about-card">
+
+      <span class="eyebrow">WHO I AM</span>
+
+      @for (paragraph of intro; track $index) {
+        <p class="about-text">{{ paragraph }}</p>
+      }
+
+      <dl class="facts">
+        @for (fact of facts; track fact.label) {
+          <div class="fact">
+            <dt>{{ fact.label }}</dt>
+            <dd>{{ fact.value }}</dd>
+          </div>
+        }
+      </dl>
+
+      <div class="chips">
+        @for (interest of interests; track interest) {
+          <span class="chip">{{ interest }}</span>
+        }
+      </div>
+
+      <div class="now">
+        <span class="now-dot"></span>
+        <div class="now-list">
+          @for (item of now; track item.label) {
+            <span class="now-item">
+              <strong>{{ item.label }}</strong> {{ item.value }}
+            </span>
+          }
+        </div>
+      </div>
+
+    </article>
+
+    <!-- EDUCATION -->
+    <article class="about-card">
+
+      <span class="eyebrow">EDUCATION</span>
+      <h3>Academic path</h3>
+
+      <div class="timeline">
+
+        <span class="timeline-line" aria-hidden="true"></span>
+
+        @for (item of education; track item.title) {
+          <div class="t-item" [class.current]="item.current">
+
+            <span class="t-node" aria-hidden="true"></span>
+
+            <span class="t-period">{{ item.period }}</span>
+            <h4>{{ item.title }}</h4>
+            <span class="t-place">{{ item.place }}</span>
+            <p>{{ item.text }}</p>
+
+          </div>
+        }
+
+      </div>
+
+    </article>
+
+  </div>
+
+  <!-- NUMBERS -->
+  <div class="about-stats">
+    @for (stat of stats; track stat.label) {
+      <div class="stat">
+        <span class="stat-value" [attr.data-value]="stat.value">{{ stat.value }}</span>
+        <span class="stat-label">{{ stat.label }}</span>
+      </div>
+    }
+  </div>
+
+</section>

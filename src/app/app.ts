@@ -7,11 +7,13 @@ import { Hero } from './components/hero/hero';
 import { Terminal } from './components/terminal/terminal';
 import { Projects } from './components/projects/projects';
 import { Skills } from './components/skills/skills';
+import { About } from './components/about/about';
+import {Experience} from './components/experience/experience';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Navbar, Hero, Terminal, Projects, Skills],
+  imports: [RouterOutlet, Navbar, Hero, Terminal, Projects, Skills, About, Experience],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

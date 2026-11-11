@@ -1,4 +1,3 @@
-
 <section class="skills-section" id="skills" #skillsRoot>
 
   <!-- SECTION HEADING -->
@@ -19,138 +18,104 @@
   <!-- MAIN WORKSPACE -->
   <div class="skills-workspace">
 
-    <!-- LEFT SIDEBAR -->
-    <aside class="skills-sidebar">
-
-      <div class="sidebar-heading">
-        <span>EXPLORER</span>
-        <span class="sidebar-status">● ONLINE</span>
-      </div>
-
-      <p class="sidebar-caption">
-        Browse my technologies
-      </p>
-
-      <div class="category-list">
-
-        @for (category of categories; track category.name; let i = $index) {
-          <button
-            type="button"
-            class="category-button"
-            [class.active]="activeCategory() === category.name"
-            [attr.aria-pressed]="activeCategory() === category.name"
-            (click)="selectCategory(category.name)">
-
-            <span class="category-number">
-              0{{ i + 1 }}
-            </span>
-
-            <span class="category-name">
-              {{ category.name }}
-            </span>
-
-            <span class="category-count">
-              {{ category.skills.length }}
-            </span>
-
-          </button>
-        }
-
-      </div>
-
-      <div class="sidebar-footer">
-        <span class="pulse-dot"></span>
-        Always learning. Always building.
-      </div>
-
-    </aside>
-
-    <!-- RIGHT CONTENT -->
     <div class="skills-main">
 
-      <!-- CATEGORY HEADER -->
-      <div class="skills-topline">
+      <!-- LEFT: switcher + technologies -->
+      <div class="skills-panel">
 
-        <div>
-          <span class="eyebrow">CURRENT COLLECTION</span>
-          <h3>{{ currentCategory.name }}</h3>
+        <div class="skills-tabs" role="tablist" aria-label="Technology categories">
+          <span class="tab-indicator" aria-hidden="true"></span>
+
+          @for (category of categories; track category.name) {
+            <button
+              type="button"
+              role="tab"
+              class="tab"
+              [class.active]="activeCategory() === category.name"
+              [attr.aria-selected]="activeCategory() === category.name"
+              (click)="selectCategory(category.name)">
+
+              <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path [attr.d]="category.icon" />
+              </svg>
+              <span class="tab-name">{{ category.name }}</span>
+              <span class="tab-count">{{ category.skills.length }}</span>
+
+            </button>
+          }
         </div>
 
-        <span class="tech-count">
-          {{ visibleSkills.length }} TECHNOLOGIES
-        </span>
+        <div class="skills-topline">
+          <div>
+            <span class="eyebrow">CURRENT COLLECTION</span>
+            <h3>{{ currentCategory.name }}</h3>
+          </div>
+
+          <span class="tech-count">
+            {{ visibleSkills.length }} TECHNOLOGIES
+          </span>
+        </div>
+
+        <p class="category-description">
+          {{ currentCategory.description }}
+        </p>
+
+        <div class="skills-grid">
+
+          @for (skill of visibleSkills; track skill.name) {
+
+            <button
+              type="button"
+              class="skill-card"
+              [class.selected]="isSelected(skill)"
+              [attr.aria-pressed]="isSelected(skill)"
+              (click)="selectSkill(skill)">
+
+              <span class="logo-container">
+                <img
+                  [src]="skill.logo"
+                  [alt]="skill.name + ' logo'"
+                  loading="lazy"
+                />
+              </span>
+
+              <span class="skill-meta">
+                <span class="skill-name">{{ skill.name }}</span>
+                <span class="skill-level-text">{{ skill.level }}</span>
+              </span>
+
+              <span class="skill-card-arrow">↗</span>
+
+            </button>
+
+          }
+
+        </div>
 
       </div>
 
-      <p class="category-description">
-        {{ currentCategory.description }}
-      </p>
-
-      <!-- TECHNOLOGY GRID -->
-      <div class="skills-grid">
-
-        @for (skill of visibleSkills; track skill.name) {
-
-          <button
-            type="button"
-            class="skill-card"
-            [class.selected]="isSelected(skill)"
-            [attr.aria-pressed]="isSelected(skill)"
-            (click)="selectSkill(skill)">
-
-            <span class="logo-container">
-              <img
-                [src]="skill.logo"
-                [alt]="skill.name + ' logo'"
-                loading="lazy"
-              />
-            </span>
-
-            <span class="skill-name">
-              {{ skill.name }}
-            </span>
-
-            <span class="skill-card-arrow">
-              ↗
-            </span>
-
-          </button>
-
-        }
-
-      </div>
-
-      <!-- SELECTED TECHNOLOGY SPOTLIGHT -->
+      <!-- RIGHT: selected technology -->
       <div class="skill-spotlight">
 
         <div class="spotlight-decoration"></div>
 
-        <!-- ANIMATED CONSTELLATION -->
-        <div class="skills-orbit" aria-hidden="true">
+        <div class="spotlight-stage">
 
-          <span class="orbit-ring orbit-ring-one"></span>
+          <!-- ORBITING RINGS (pure CSS animation, always running) -->
+          <div class="skills-orbit" aria-hidden="true">
+            <span class="orbit-ring orbit-ring-one"></span>
+            <span class="orbit-ring orbit-ring-two"></span>
+          </div>
 
-          <span class="orbit-ring orbit-ring-two"></span>
-
-          <span class="orbit-node node-one"></span>
-
-          <span class="orbit-node node-two"></span>
-
-          <span class="orbit-node node-three"></span>
-
-          <span class="orbit-node node-four"></span>
+          <div class="spotlight-logo">
+            <img
+              [src]="selectedSkill().logo"
+              [alt]="selectedSkill().name + ' logo'"
+            />
+          </div>
 
         </div>
 
-        <!-- SELECTED LOGO -->
-        <div class="spotlight-logo">
-          <img
-            [src]="selectedSkill().logo"
-            [alt]="selectedSkill().name + ' logo'"
-          />
-        </div>
-
-        <!-- SELECTED TECHNOLOGY INFORMATION -->
         <div class="spotlight-content">
 
           <span class="eyebrow">
@@ -172,7 +137,6 @@
 
         </div>
 
-        <!-- INDEX -->
         <div class="spotlight-index">
           <span>01</span>
           <span>/</span>

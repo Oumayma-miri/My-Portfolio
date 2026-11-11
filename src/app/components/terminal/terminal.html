@@ -1,0 +1,91 @@
+
+<section class="terminal-section" id="terminal">
+
+  <div class="section-heading">
+    <span class="section-label">INTERACTIVE EXPERIENCE</span>
+    <h2>Explore my <span>terminal.</span></h2>
+    <p>
+      Curious about my work? Don't just browse.
+      Try interacting with my terminal.
+    </p>
+  </div>
+
+  <div class="terminal-window">
+
+    <div class="terminal-header">
+
+      <div class="window-controls">
+        <span class="control red"></span>
+        <span class="control yellow"></span>
+        <span class="control green"></span>
+      </div>
+
+      <span class="terminal-title">
+        oumayma@portfolio:~
+      </span>
+
+      <span class="terminal-version">BASH</span>
+
+    </div>
+
+    <div class="terminal-body">
+
+      <div class="terminal-welcome">
+        <span class="welcome-symbol">✦</span>
+        <span>Welcome to Oumayma's terminal</span>
+      </div>
+
+      @for (entry of entries(); track $index) {
+
+        @if (entry.type === 'command') {
+
+          <div class="terminal-line command-line">
+            <span class="prompt">visitor@portfolio:~$</span>
+            <span>{{ entry.text }}</span>
+          </div>
+
+        } @else {
+
+          <div class="terminal-line output-line">
+            {{ entry.text }}
+          </div>
+
+        }
+
+      }
+
+      <form class="terminal-input-row"
+            (submit)="$event.preventDefault(); execute(commandInput.value); commandInput.value = '';">
+
+        <label for="terminal-command" class="prompt">
+          visitor@portfolio:~$
+        </label>
+
+        <input
+          #commandInput
+          id="terminal-command"
+          type="text"
+          autocomplete="off"
+          spellcheck="false"
+          aria-label="Enter a terminal command"
+          placeholder="Type a command..."
+        />
+
+        <span class="cursor"></span>
+
+      </form>
+
+    </div>
+
+    <div class="terminal-footer">
+      <span>● SYSTEM ONLINE</span>
+      <span>POWERED BY ANGULAR</span>
+    </div>
+
+  </div>
+
+  <p class="terminal-hint">
+    Try <code>help</code> to get started.
+  </p>
+
+</section>

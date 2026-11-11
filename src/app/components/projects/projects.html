@@ -1,0 +1,235 @@
+
+<section class="projects-section" id="projects">
+
+  <div class="projects-container">
+
+    <div class="section-top">
+      <div>
+        <span class="section-label">// MY CREATIVE SPACE</span>
+        <h2>Selected <span>Works.</span></h2>
+        <p>
+          A collection of things I've designed, developed
+          and brought to life through code.
+        </p>
+      </div>
+
+      <div class="project-counter">
+        <strong>04</strong>
+        <span>PROJECTS</span>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+
+    <div class="filter-bar">
+      @for (filter of filters; track filter) {
+        <button
+          type="button"
+          [class.active]="activeFilter() === filter"
+          (click)="setFilter(filter)">
+          {{ filter }}
+          @if (activeFilter() === filter) {
+            <span class="filter-dot"></span>
+          }
+        </button>
+      }
+    </div>
+
+    <!-- PROJECT GRID -->
+
+    <div class="projects-grid">
+
+      @for (project of filteredProjects(); track project.id) {
+
+        <article
+          class="project-card"
+          [class]="'project-card accent-' + project.accent"
+          tabindex="0"
+          role="button"
+          [attr.aria-label]="'View details for ' + project.name"
+          (click)="openProject(project)"
+          (keydown.enter)="openProject(project)"
+          (keydown.space)="openProject(project); $event.preventDefault()">
+
+          <div class="project-visual">
+
+            <div class="visual-top">
+              <span>PROJECT_{{ project.number }}</span>
+              <span>© {{ project.year }}</span>
+            </div>
+
+            <div class="visual-center">
+
+              @if (project.id === 'health') {
+                <div class="mock-dashboard">
+                  <div class="mock-sidebar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                  <div class="mock-content">
+                    <div class="mock-title"></div>
+                    <div class="mock-stats">
+                      <span></span><span></span><span></span>
+                    </div>
+                    <div class="mock-chart">
+                      <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                    </div>
+                  </div>
+                </div>
+              }
+
+              @if (project.id === 'carpool') {
+                <div class="visual-symbol car-symbol">
+                  <span>↗</span>
+                  <strong>GO</strong>
+                  <small>FIND YOUR RIDE</small>
+                </div>
+              }
+
+              @if (project.id === 'product') {
+                <div class="visual-symbol product-symbol">
+                  <span>◈</span>
+                  <strong>PRODUCT</strong>
+                  <small>MANAGEMENT SYSTEM</small>
+                </div>
+              }
+
+              @if (project.id === 'cv') {
+                <div class="visual-symbol cv-symbol">
+                  <span>CV</span>
+                  <strong>YOUR STORY.</strong>
+                  <small>BUILT WITH CODE</small>
+                </div>
+              }
+
+            </div>
+
+            <div class="visual-bottom">
+              <span>0{{ project.number }}</span>
+              <span>EXPLORE PROJECT ↗</span>
+            </div>
+
+          </div>
+
+          <div class="project-info">
+
+            <div class="project-meta">
+              <span>{{ project.category }}</span>
+              <span>{{ project.year }}</span>
+            </div>
+
+            <h3>{{ project.name }}</h3>
+            <p>{{ project.subtitle }}</p>
+
+            <div class="project-tech">
+              @for (tech of project.technologies; track tech) {
+                <span>{{ tech }}</span>
+              }
+            </div>
+
+            <div class="project-open">
+              <span>View case study</span>
+              <span class="open-arrow">↗</span>
+            </div>
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+
+    <!-- PROJECT DETAIL MODAL -->
+
+    @if (selectedProject(); as project) {
+
+      <div
+        class="modal-backdrop"
+        (click)="closeProject()"
+        (keydown.escape)="closeProject()">
+
+        <div
+          class="project-modal"
+          role="dialog"
+          aria-modal="true"
+          [attr.aria-label]="project.name"
+          (click)="$event.stopPropagation()">
+
+          <div class="modal-header">
+            <span>PROJECT_DETAILS / {{ project.number }}</span>
+
+            <button
+              type="button"
+              class="modal-close"
+              aria-label="Close project details"
+              (click)="closeProject()">
+              ✕
+            </button>
+          </div>
+
+          <div class="modal-content">
+
+            <span class="section-label">
+              {{ project.category }} · {{ project.year }}
+            </span>
+
+            <h2>{{ project.name }}<span>.</span></h2>
+
+            <h3>{{ project.subtitle }}</h3>
+
+            <p class="modal-description">
+              {{ project.description }}
+            </p>
+
+            <div class="modal-block">
+              <h4>KEY FEATURES</h4>
+
+              @for (feature of project.features; track feature) {
+                <div class="feature-item">
+                  <span>✦</span>
+                  {{ feature }}
+                </div>
+              }
+            </div>
+
+            <div class="modal-block">
+              <h4>TECHNOLOGIES</h4>
+
+              <div class="project-tech modal-tech">
+                @for (tech of project.technologies; track tech) {
+                  <span>{{ tech }}</span>
+                }
+              </div>
+            </div>
+
+            <div class="modal-actions">
+              @if (project.github) {
+                <a
+                  [href]="project.github"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="github-button">
+                  View GitHub ↗
+                </a>
+              }
+
+              <button
+                type="button"
+                class="close-button"
+                (click)="closeProject()">
+                Close details
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    }
+
+  </div>
+
+</section>

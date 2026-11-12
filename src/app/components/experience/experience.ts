@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   OnDestroy,
   ViewChild,
   signal,
@@ -30,18 +31,27 @@ interface ExperienceItem {
   link?: { label: string; url: string };
 }
 
-interface Achievement {
-  icon: string; // SVG path data (24x24, stroke style)
+interface GalleryItem {
   title: string;
-  text: string;
+  description: string;
   meta: string;
+  image: string; // path to your image, or '' to show a placeholder
+}
+
+interface GalleryGroup {
+  label: string;
+  title: string;
+  description: string;
+  noun: string;
+  icon: string; // SVG path data (24x24, stroke style)
+  items: GalleryItem[];
 }
 
 // Simple line icons (Lucide-style paths)
 const ICON_BRIEFCASE = 'M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z';
 const ICON_AWARD = 'M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM8.21 13.89L7 23l5-3 5 3-1.21-9.12';
-const ICON_CAP = 'M22 10L12 5 2 10l10 5 10-5zM22 10v6M6 12v5c3 3 9 3 12 0v-5';
 const ICON_CALENDAR = 'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z';
+const ICON_IMAGE = 'M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM21 15l-5-5L5 21';
 
 @Component({
   selector: 'app-experience',
@@ -54,8 +64,11 @@ export class Experience implements AfterViewInit, OnDestroy {
 
   private animationContext?: ReturnType<typeof gsap.context>;
   private tabsObserver?: ResizeObserver;
+  private lastFocus: HTMLElement | null = null;
+  private closing = false;
 
   protected readonly tabIcon = ICON_BRIEFCASE;
+  protected readonly imageIcon = ICON_IMAGE;
 
   // =====================================================
   //  EDIT YOUR CONTENT HERE  (anything in [brackets] is a placeholder)
@@ -97,20 +110,75 @@ export class Experience implements AfterViewInit, OnDestroy {
     },
   ];
 
-  protected readonly achievements: Achievement[] = [
-    { icon: ICON_AWARD, title: '[Achievement or certificate]', text: '[One short line about what it is and why it matters.]', meta: '[Year]' },
-    { icon: ICON_CAP, title: '[Academic achievement]', text: '[One short line about what it is and why it matters.]', meta: '[Year]' },
-    { icon: ICON_CALENDAR, title: '[Event, club or activity]', text: '[One short line about what you did.]', meta: '[Year]' },
+  // IMAGES: put your files in  public/achievements/  and write the path WITHOUT "public",
+  // for example  image: 'achievements/certificate-1.jpg'
+  // (older Angular projects: put them in src/assets/achievements/ and use 'assets/achievements/...')
+  // Leave image: '' to show a placeholder. Copy an item block to add more.
+  protected readonly groups: GalleryGroup[] = [
+    {
+      label: 'ACHIEVEMENTS & CERTIFICATES',
+      title: 'Achievements & certificates',
+      description: '[One short line about this collection.]',
+      noun: 'CERTIFICATES',
+      icon: ICON_AWARD,
+      items: [
+        {
+          title: '[Certificate or achievement name]',
+          description: '[Short description: what it is and why it matters.]',
+          meta: '[Issuer · Year]',
+          image: '',
+        },
+        {
+          title: '[Certificate or achievement name]',
+          description: '[Short description: what it is and why it matters.]',
+          meta: '[Issuer · Year]',
+          image: '',
+        },
+      ],
+    },
+    {
+      label: 'EVENTS & CLUB ACTIVITIES',
+      title: 'Events & club activities',
+      description: '[One short line about this collection.]',
+      noun: 'MOMENTS',
+      icon: ICON_CALENDAR,
+      items: [
+        {
+          title: '[Event or activity name]',
+          description: '[Short description: what you did and what you took from it.]',
+          meta: '[Place · Year]',
+          image: '',
+        },
+        {
+          title: '[Event or activity name]',
+          description: '[Short description: what you did and what you took from it.]',
+          meta: '[Place · Year]',
+          image: '',
+        },
+      ],
+    },
   ];
 
   // =====================================================
 
-  // activeIndex = tab highlight (instant), displayedIndex = detail content (after exit animation)
+  // experience switcher
   protected readonly activeIndex = signal(0);
   protected readonly displayedIndex = signal(0);
 
+  // gallery
+  protected readonly openGroup = signal<number | null>(null);
+  protected readonly itemIndex = signal(0);
+
   protected get current(): ExperienceItem {
     return this.experiences[this.displayedIndex()] ?? this.experiences[0];
+  }
+
+  protected get group(): GalleryGroup {
+    return this.groups[this.openGroup() ?? 0];
+  }
+
+  protected get item(): GalleryItem {
+    return this.group.items[this.itemIndex()] ?? this.group.items[0];
   }
 
   private get root(): HTMLElement {
@@ -136,6 +204,7 @@ export class Experience implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    document.body.style.overflow = '';
     this.tabsObserver?.disconnect();
     this.animationContext?.revert();
   }
@@ -153,7 +222,7 @@ export class Experience implements AfterViewInit, OnDestroy {
       .from('.exp-task', { x: -12, opacity: 0, duration: 0.4, stagger: 0.08 }, '-=0.4')
       .from('.exp-chip', { scale: 0.9, opacity: 0, duration: 0.35, stagger: 0.05, ease: 'back.out(2)' }, '-=0.5')
       .from('.ach-head', { y: 16, opacity: 0, duration: 0.5 }, '-=0.2')
-      .from('.ach-card', { y: 24, opacity: 0, duration: 0.55, stagger: 0.1 }, '-=0.3');
+      .from('.ach-card', { y: 28, opacity: 0, duration: 0.6, stagger: 0.12 }, '-=0.3');
   }
 
   // ---------- sliding tab indicator ----------
@@ -206,5 +275,112 @@ export class Experience implements AfterViewInit, OnDestroy {
       gsap.fromTo('.exp-task', { x: -12, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, stagger: 0.07, delay: 0.15, ease: 'power2.out' });
       gsap.fromTo('.exp-chip', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, stagger: 0.04, delay: 0.2, ease: 'back.out(2)' });
     });
+  }
+
+  // =====================================================
+  //  GALLERY (opens when you click an achievements card)
+  // =====================================================
+
+  protected open(groupIndex: number): void {
+    this.lastFocus = document.activeElement as HTMLElement | null;
+    this.closing = false;
+    this.itemIndex.set(0);
+    this.openGroup.set(groupIndex);
+    document.body.style.overflow = 'hidden';
+
+    requestAnimationFrame(() => {
+      this.root.querySelector<HTMLElement>('.lb-close')?.focus({ preventScroll: true });
+
+      this.animationContext?.add(() => {
+        gsap.fromTo('.lb-backdrop', { opacity: 0 }, { opacity: 1, duration: 0.3 });
+        gsap.fromTo('.lb-panel', { y: 28, scale: 0.96, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.5, ease: 'power3.out' });
+        gsap.fromTo('.lb-thumb', { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, stagger: 0.05, delay: 0.25 });
+        this.playItemIn(0);
+      });
+    });
+  }
+
+  protected close(): void {
+    if (this.openGroup() === null || this.closing) return;
+    this.closing = true;
+
+    const finish = (): void => {
+      this.openGroup.set(null);
+      document.body.style.overflow = '';
+      this.lastFocus?.focus({ preventScroll: true });
+      this.closing = false;
+    };
+
+    if (this.reduceMotion()) {
+      finish();
+      return;
+    }
+
+    this.animationContext?.add(() => {
+      gsap.to('.lb-panel', { y: 20, scale: 0.97, opacity: 0, duration: 0.25, ease: 'power2.in' });
+      gsap.to('.lb-backdrop', { opacity: 0, duration: 0.25, onComplete: finish });
+    });
+  }
+
+  protected next(): void {
+    this.go(1);
+  }
+
+  protected prev(): void {
+    this.go(-1);
+  }
+
+  protected goTo(index: number): void {
+    if (index === this.itemIndex()) return;
+    this.change(index, index > this.itemIndex() ? 1 : -1);
+  }
+
+  private go(direction: 1 | -1): void {
+    const count = this.group.items.length;
+    if (count < 2) return;
+    this.change((this.itemIndex() + direction + count) % count, direction);
+  }
+
+  private change(index: number, direction: number): void {
+    this.itemIndex.set(index);
+    if (this.reduceMotion()) return;
+    requestAnimationFrame(() => this.animationContext?.add(() => this.playItemIn(direction)));
+  }
+
+  private playItemIn(direction: number): void {
+    gsap.fromTo('.lb-image-wrap', { x: direction * 40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.45, ease: 'power3.out' });
+    gsap.fromTo('.lb-caption > *', { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.06, delay: 0.1, ease: 'power2.out' });
+  }
+
+  protected onImgError(event: Event): void {
+    (event.target as HTMLImageElement).classList.add('broken');
+  }
+
+  // keyboard: Esc closes, arrows navigate, Tab stays inside the gallery
+  @HostListener('document:keydown', ['$event'])
+  protected onKey(event: KeyboardEvent): void {
+    if (this.openGroup() === null) return;
+
+    if (event.key === 'Escape') {
+      this.close();
+    } else if (event.key === 'ArrowRight') {
+      this.next();
+    } else if (event.key === 'ArrowLeft') {
+      this.prev();
+    } else if (event.key === 'Tab') {
+      const focusable = Array.from(
+        this.root.querySelectorAll<HTMLElement>('.lb-panel button:not([disabled])'),
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
   }
 }

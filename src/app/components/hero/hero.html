@@ -16,12 +16,10 @@
       <span>EL MIRI.</span>
     </h1>
 
-    
-<h2 class="role-line">
-  <span class="role-prefix">I'M A</span>
-  <span class="rotating-role">{{ currentRole() }}</span>
-</h2>
-
+    <h2 class="role-line">
+      <span class="role-prefix">I'M A</span>
+      <span class="rotating-role">{{ currentRole() }}</span>
+    </h2>
 
     <p class="description">
       I create digital experiences by combining
@@ -56,9 +54,23 @@
   <!-- RIGHT DEVELOPER CARD -->
   <div class="hero-visual">
 
-    <div class="orbit orbit-one"></div>
-    <div class="orbit orbit-two"></div>
+    <!-- ORBIT SYSTEM -->
+    <div class="hero-orbit" aria-hidden="true">
 
+      <span class="hero-orbit-ring ring-purple">
+        <span class="orbit-point"></span>
+      </span>
+
+      <span class="hero-orbit-ring ring-cyan">
+        <span class="orbit-point"></span>
+      </span>
+
+      <span class="orbit-decoration orbit-decoration-one"></span>
+      <span class="orbit-decoration orbit-decoration-two"></span>
+
+    </div>
+
+    <!-- DEVELOPER CARD -->
     <div class="developer-card">
 
       <div class="card-top">
@@ -68,8 +80,9 @@
 
       <div class="profile-area">
         <div class="profile-avatar">
-          OM<span>.</span>
+          <img src="images/oumayma.png" alt="Oumayma EL MIRI">
         </div>
+        
 
         <div class="profile-info">
           <h3>Oumayma EL MIRI</h3>
@@ -105,6 +118,7 @@
 
     </div>
 
+    <!-- FLOATING TAGS -->
     <div class="floating-tag tag-angular">
       <span>◈</span> Angular
     </div>

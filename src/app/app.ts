@@ -9,11 +9,14 @@ import { Projects } from './components/projects/projects';
 import { Skills } from './components/skills/skills';
 import { About } from './components/about/about';
 import {Experience} from './components/experience/experience';
+import {CodeShowcase} from './components/code-showcase/code-showcase';
+import { Contact } from './components/contact/contact';
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Navbar, Hero, Terminal, Projects, Skills, About, Experience],
+  imports: [RouterOutlet, Navbar, Hero, Terminal, Projects, Skills, About, Experience, CodeShowcase, Contact],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

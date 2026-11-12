@@ -113,21 +113,114 @@
   </div>
 
   <div class="ach-grid">
-    @for (a of achievements; track $index) {
-      <article class="ach-card">
+    @for (g of groups; track g.title; let gi = $index) {
 
-        <span class="ach-icon">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path [attr.d]="a.icon" />
-          </svg>
+      <button type="button" class="ach-card" (click)="open(gi)">
+
+        <!-- fanned preview of the first images -->
+        <span class="ach-stack" aria-hidden="true">
+          @for (it of g.items.slice(0, 3); track $index) {
+            <span class="ach-tile">
+              @if (it.image) {
+                <img [src]="it.image" alt="" loading="lazy" (error)="onImgError($event)" />
+              }
+            </span>
+          }
         </span>
 
-        <h4>{{ a.title }}</h4>
-        <p>{{ a.text }}</p>
-        <span class="ach-meta">{{ a.meta }}</span>
+        <span class="ach-info">
+          <span class="ach-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path [attr.d]="g.icon" />
+            </svg>
+          </span>
 
-      </article>
+          <span class="ach-text">
+            <span class="ach-title">{{ g.title }}</span>
+            <span class="ach-desc">{{ g.description }}</span>
+          </span>
+        </span>
+
+        <span class="ach-foot">
+          <span class="ach-count">{{ g.items.length }} {{ g.noun }}</span>
+          <span class="ach-cta">View gallery <span class="ach-arrow">↗</span></span>
+        </span>
+
+      </button>
+
     }
   </div>
+
+  <!-- GALLERY (opens when a card is clicked) -->
+  @if (openGroup() !== null) {
+    <div class="lb" role="dialog" aria-modal="true" [attr.aria-label]="group.title" (click)="close()">
+
+      <div class="lb-backdrop"></div>
+
+      <div class="lb-panel" (click)="$event.stopPropagation()">
+
+        <header class="lb-head">
+          <span class="eyebrow">{{ group.label }}</span>
+
+          <div class="lb-head-right">
+            <span class="lb-count">
+              {{ itemIndex() + 1 }} / {{ group.items.length }}
+            </span>
+
+            <button type="button" class="lb-close" (click)="close()" aria-label="Close gallery">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <div class="lb-main">
+
+          <button type="button" class="lb-nav" (click)="prev()" aria-label="Previous image">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+          </button>
+
+          <div class="lb-image-wrap">
+            <span class="lb-placeholder" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path [attr.d]="imageIcon" /></svg>
+            </span>
+
+            @if (item.image) {
+              <img class="lb-image" [src]="item.image" [alt]="item.title" (error)="onImgError($event)" />
+            }
+          </div>
+
+          <button type="button" class="lb-nav" (click)="next()" aria-label="Next image">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6" /></svg>
+          </button>
+
+        </div>
+
+        <div class="lb-caption">
+          <span class="lb-meta">{{ item.meta }}</span>
+          <h4>{{ item.title }}</h4>
+          <p>{{ item.description }}</p>
+        </div>
+
+        <div class="lb-thumbs">
+          @for (it of group.items; track $index) {
+            <button
+              type="button"
+              class="lb-thumb"
+              [class.active]="itemIndex() === $index"
+              [attr.aria-label]="'Show ' + it.title"
+              (click)="goTo($index)">
+              @if (it.image) {
+                <img [src]="it.image" alt="" (error)="onImgError($event)" />
+              }
+            </button>
+          }
+        </div>
+
+      </div>
+
+    </div>
+  }
 
 </section>

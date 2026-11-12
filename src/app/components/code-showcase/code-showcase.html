@@ -1,0 +1,130 @@
+<section class="cs-section" id="code" #csRoot>
+
+  <!-- SECTION HEADING -->
+  <div class="cs-heading">
+    <div class="section-label">
+      <span class="label-dot"></span>
+      // CODE SHOWCASE
+    </div>
+
+    <h2>How I <span>write code.</span></h2>
+
+    <p>
+      Small examples of patterns I use across Angular, PHP and Java.
+      Click a step on the right to highlight the lines it explains.
+    </p>
+  </div>
+
+  <div class="cs-grid">
+
+    <!-- CODE EDITOR -->
+    <div class="editor">
+
+      <div class="ed-bar">
+
+        <div class="ed-tabs" role="tablist" aria-label="Code snippets">
+          <span class="ed-indicator" aria-hidden="true"></span>
+
+          @for (s of snippets; track s.file; let i = $index) {
+            <button
+              type="button"
+              role="tab"
+              class="ed-tab"
+              [class.active]="activeSnippet() === i"
+              [attr.aria-selected]="activeSnippet() === i"
+              (click)="select(i)">
+
+              <span class="lang-dot" [attr.data-lang]="s.lang"></span>
+              {{ s.file }}
+
+            </button>
+          }
+        </div>
+
+        <button type="button" class="ed-copy" [class.done]="copied()" (click)="copy()">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            @if (copied()) {
+              <path d="M20 6L9 17l-5-5" />
+            } @else {
+              <path d="M9 9h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1zM5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" />
+            }
+          </svg>
+          {{ copied() ? 'Copied' : 'Copy' }}
+        </button>
+
+      </div>
+
+      <div class="ed-path">
+        {{ snippet.project }} / {{ snippet.path }}
+        <span class="ed-lang">{{ langLabel[snippet.lang] }}</span>
+      </div>
+
+      <div class="ed-code" role="region" aria-label="Code">
+        @for (line of lines(); track line.n) {
+          <div
+            class="line"
+            [class.active]="isActive(line.n)"
+            [class.has-note]="hasNote(line.n)"
+            (click)="onLineClick(line.n)">
+
+            <span class="ln">{{ line.n }}</span>
+            <span class="code-text">@for (tok of line.tokens; track $index) {<span class="tk" [class]="tok.type">{{ tok.text }}</span>}</span>
+
+          </div>
+        }
+      </div>
+
+    </div>
+
+    <!-- WALKTHROUGH -->
+    <aside class="cs-side">
+
+      <div class="side-head">
+        <span class="eyebrow">WALKTHROUGH</span>
+        <h3>{{ snippet.title }}</h3>
+        <p>{{ snippet.description }}</p>
+      </div>
+
+      <div class="notes">
+        @for (note of snippet.notes; track $index; let i = $index) {
+          <button
+            type="button"
+            class="note"
+            [class.active]="activeNote() === i"
+            [attr.aria-expanded]="activeNote() === i"
+            (click)="selectNote(i)">
+
+            <span class="note-num">0{{ i + 1 }}</span>
+
+            <span class="note-main">
+              <span class="note-title">{{ note.title }}</span>
+              <span class="note-lines">
+                {{ note.from === note.to ? 'line ' + note.from : 'lines ' + note.from + '-' + note.to }}
+              </span>
+
+              <span class="note-body">
+                <span class="note-text">{{ note.text }}</span>
+              </span>
+            </span>
+
+          </button>
+        }
+      </div>
+
+      <div class="side-foot">
+        @for (c of snippet.concepts; track c) {
+          <span class="chip">{{ c }}</span>
+        }
+
+        @if (snippet.link; as link) {
+          <a class="side-link" [href]="link.url" target="_blank" rel="noopener noreferrer">
+            {{ link.label }} ↗
+          </a>
+        }
+      </div>
+
+    </aside>
+
+  </div>
+
+</section>

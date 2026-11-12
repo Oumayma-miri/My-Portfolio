@@ -1,0 +1,218 @@
+<section class="ct-section" id="contact">
+
+  <div class="ct-grid">
+
+    <!-- LEFT: message, email and the orbit of links -->
+    <div class="ct-left">
+
+      <div class="ct-text">
+
+        <div class="ct-heading">
+          <div class="section-label">
+            <span class="label-dot"></span>
+            // CONTACT
+          </div>
+
+          <h2>Let's <span>work together.</span></h2>
+
+          <p>
+            Have an opportunity, a project or just a question?
+            Send me a message and I will get back to you.
+          </p>
+        </div>
+
+        <div class="status">
+          <span class="status-dot"></span>
+          {{ availability }}
+        </div>
+
+        <div class="email-block">
+          <span class="label">EMAIL</span>
+
+          <div class="email-row">
+            <a class="email-address" [href]="'mailto:' + contactEmail">{{ contactEmail }}</a>
+
+            <button type="button" class="copy-btn" [class.done]="copied()" (click)="copyEmail()">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                @if (copied()) {
+                  <path d="M20 6L9 17l-5-5" />
+                } @else {
+                  <path d="M9 9h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1zM5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" />
+                }
+              </svg>
+              {{ copied() ? 'Copied' : 'Copy' }}
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ORBIT: my links travel around the monogram -->
+      <div class="ct-orbit">
+
+        <span class="orbit-core" aria-hidden="true">OM<span>.</span></span>
+
+        <span class="orbit-ring ring-one">
+          @for (n of ringNodes(1); track n.label) {
+            <span class="node-wrap" [style.--a]="n.angle + 'deg'">
+              <a
+                class="orbit-node"
+                [href]="n.url"
+                [attr.target]="n.external ? '_blank' : null"
+                [attr.rel]="n.external ? 'noopener noreferrer' : null"
+                [attr.aria-label]="n.label"
+                [attr.data-label]="n.label">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="n.icon" /></svg>
+              </a>
+            </span>
+          }
+        </span>
+
+        <span class="orbit-ring ring-two">
+          @for (n of ringNodes(2); track n.label) {
+            <span class="node-wrap" [style.--a]="n.angle + 'deg'">
+              <a
+                class="orbit-node"
+                [href]="n.url"
+                [attr.target]="n.external ? '_blank' : null"
+                [attr.rel]="n.external ? 'noopener noreferrer' : null"
+                [attr.aria-label]="n.label"
+                [attr.data-label]="n.label">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="n.icon" /></svg>
+              </a>
+            </span>
+          }
+        </span>
+
+      </div>
+
+      <span class="orbit-caption">HOVER TO PAUSE · CLICK TO OPEN</span>
+
+    </div>
+
+    <!-- RIGHT: message form -->
+    <article class="form-card">
+
+      <span class="eyebrow">SEND A MESSAGE</span>
+
+      <form class="form" novalidate (submit)="send($event)">
+
+        <div class="field" [class.has-error]="error('name')">
+          <label for="cf-name">NAME</label>
+          <input
+            id="cf-name"
+            type="text"
+            autocomplete="name"
+            placeholder="Your name"
+            [value]="senderName()"
+            [attr.aria-invalid]="!!error('name')"
+            (input)="update('name', $event)"
+            (blur)="touch('name')" />
+          @if (error('name'); as err) {
+            <span class="field-error">{{ err }}</span>
+          }
+        </div>
+
+        <div class="field" [class.has-error]="error('email')">
+          <label for="cf-email">EMAIL</label>
+          <input
+            id="cf-email"
+            type="email"
+            autocomplete="email"
+            placeholder="you@example.com"
+            [value]="senderEmail()"
+            [attr.aria-invalid]="!!error('email')"
+            (input)="update('email', $event)"
+            (blur)="touch('email')" />
+          @if (error('email'); as err) {
+            <span class="field-error">{{ err }}</span>
+          }
+        </div>
+
+        <div class="field" [class.has-error]="error('message')">
+          <label for="cf-message">MESSAGE</label>
+          <textarea
+            id="cf-message"
+            rows="5"
+            placeholder="Tell me about your project or opportunity..."
+            [value]="message()"
+            [attr.aria-invalid]="!!error('message')"
+            (input)="update('message', $event)"
+            (blur)="touch('message')"></textarea>
+          @if (error('message'); as err) {
+            <span class="field-error">{{ err }}</span>
+          }
+        </div>
+
+        <div class="form-actions field">
+          <button type="submit" class="btn-send">
+            Send message <span>↗</span>
+          </button>
+
+          <button type="button" class="btn-gmail" (click)="openGmail()">
+            or open in Gmail
+          </button>
+        </div>
+
+        @if (opened()) {
+          <p class="form-note" role="status">
+            Your email is ready. If nothing opened, use the Gmail option
+            or copy my address on the left.
+          </p>
+        } @else {
+          <p class="form-hint">
+            Your message is sent from your own email app, nothing is stored on this site.
+          </p>
+        }
+
+      </form>
+
+    </article>
+
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+
+  <div class="footer-grid">
+
+    <div class="footer-col footer-brand">
+      <span class="footer-logo">OM<span>.</span></span>
+      <p>Developer, designer, always building.</p>
+      <span class="footer-status">
+        <span class="status-dot"></span>
+        {{ availability }}
+      </span>
+    </div>
+
+    <nav class="footer-col" aria-label="Footer navigation">
+      <span class="label">NAVIGATE</span>
+      @for (item of navLinks; track item.href) {
+        <a [href]="item.href">{{ item.label }}</a>
+      }
+    </nav>
+
+    <div class="footer-col">
+      <span class="label">CONNECT</span>
+      @for (link of links; track link.label) {
+        <a [href]="link.url" target="_blank" rel="noopener noreferrer">{{ link.label }} ↗</a>
+      }
+      <a [href]="'mailto:' + contactEmail">Email ↗</a>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <span>© {{ year }} {{ fullName }}. Designed and built by me with Angular and GSAP.</span>
+
+    <button type="button" class="to-top" (click)="scrollToTop()">
+      Back to top
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7" />
+      </svg>
+    </button>
+  </div>
+
+</footer>

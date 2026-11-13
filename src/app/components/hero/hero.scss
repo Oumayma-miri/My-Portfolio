@@ -611,3 +611,311 @@
   color: var(--accent-purple);
   text-shadow: 0 0 20px #9875F530;
 }
+/* =====================================================
+   PASTE AT THE VERY END OF hero.scss
+   - bigger profile photo
+   - draggable card
+   ===================================================== */
+
+/* ---------- bigger profile photo (was 65px) ---------- */
+
+.profile-avatar {
+  width: 82px;
+  height: 82px;
+
+  img {
+    -webkit-user-drag: none;
+  }
+}
+
+.profile-area {
+  gap: 20px;
+}
+
+@media (max-width: 600px) {
+  .profile-avatar {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+/* ---------- draggable card ---------- */
+
+.developer-card {
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y; /* on phones, vertical swipes still scroll the page */
+  will-change: transform;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &.is-dragging {
+    cursor: grabbing;
+    border-color: #9875f5a8;
+    box-shadow:
+      0 30px 90px #00000070,
+      0 0 50px #9875f530;
+  }
+}
+
+/* tags let the pointer through, so grabbing near them still drags the card */
+.floating-tag {
+  pointer-events: none;
+}
+
+/* small hint under the card, becomes a reset button after the card is moved */
+
+.drag-hint {
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 6px 12px;
+  border: 1px solid #ffffff14;
+  border-radius: 20px;
+  background: #ffffff05;
+  color: #ffffff59;
+  font: 9px var(--font-code);
+  letter-spacing: 1.4px;
+  white-space: nowrap;
+  cursor: default;
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+
+  &.moved {
+    border-color: #70d6f544;
+    color: var(--accent-cyan);
+    cursor: pointer;
+
+    &:hover {
+      background: #70d6f510;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 3px;
+  }
+}
+/* =====================================================
+   PASTE AT THE VERY END of hero.scss, AFTER the previous
+   hero-additions.scss block.
+   Wave video: grows out of the photo and covers the card.
+   ===================================================== */
+
+/* ---------- the clickable photo ---------- */
+
+.avatar-btn {
+  position: relative;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  .profile-avatar {
+    display: block;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  &:hover .profile-avatar {
+    border-color: #9875f5;
+    box-shadow: 0 0 26px #9875f540;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 4px;
+  }
+
+  /* soft pulse that invites the first click, stops after the video was played once */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 1.5px solid #9875f5;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    animation: avatar-ping 3s ease-out infinite;
+  }
+
+  &.watched::after {
+    display: none;
+  }
+}
+
+@keyframes avatar-ping {
+  0%   { transform: scale(0.92); opacity: 0.55; }
+  70%,
+  100% { transform: scale(1.25); opacity: 0; }
+}
+
+.avatar-badge {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #171a2d;
+  border-radius: 50%;
+  background: var(--accent-purple);
+  color: #0d0f1f;
+
+  svg {
+    width: 9px;
+    height: 9px;
+    margin-left: 1px;
+    fill: currentColor;
+  }
+}
+
+/* ---------- the video panel ---------- */
+
+.wave {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  border-radius: 19px;
+  background: #0b0d1a;
+  visibility: hidden;
+  clip-path: circle(0px at 50% 20%);
+}
+
+.wave-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* which part of the video stays visible when it is cropped; change it if your face is cut off */
+  object-position: var(--wave-focus, center 25%);
+  cursor: pointer;
+}
+
+/* darkens the top and bottom edges so the controls stay readable */
+.wave-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #05060ecc 0, transparent 26%, transparent 72%, #05060eb3 100%);
+  pointer-events: none;
+}
+
+.wave-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 14px 0 18px;
+}
+
+.wave-label {
+  color: #f5f2fa;
+  font: 9px var(--font-code);
+  letter-spacing: 1.5px;
+}
+
+.wave-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.wave-btn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #ffffff2e;
+  border-radius: 50%;
+  background: #05060e80;
+  backdrop-filter: blur(8px);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:hover {
+    border-color: #9875f5aa;
+    background: #9875f533;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 2px;
+  }
+}
+
+.wave-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: #ffffff24;
+}
+
+.wave-progress-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+  transition: width 0.25s linear;
+}
+
+.wave-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border: 2px solid #ffffff30;
+  border-top-color: var(--accent-cyan);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  animation: wave-spin 0.8s linear infinite;
+  pointer-events: none;
+
+  &.show {
+    opacity: 1;
+  }
+}
+
+@keyframes wave-spin {
+  to { transform: rotate(360deg); }
+}
+
+.wave-error {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #f0a3bb;
+  font: 10px var(--font-code);
+  letter-spacing: 1.5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-btn::after {
+    animation: none;
+  }
+}

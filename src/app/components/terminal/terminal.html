@@ -1,4 +1,3 @@
-
 <section class="terminal-section" id="terminal">
 
   <div class="section-heading">
@@ -21,60 +20,147 @@
       </div>
 
       <span class="terminal-title">
-        oumayma@portfolio:~
+        oumayma&#64;portfolio:~
       </span>
 
       <span class="terminal-version">BASH</span>
 
     </div>
 
-    <div class="terminal-body">
+    <div class="terminal-body" #terminalBody (click)="focusInput()" role="log" aria-live="polite">
 
       <div class="terminal-welcome">
         <span class="welcome-symbol">✦</span>
         <span>Welcome to Oumayma's terminal</span>
       </div>
 
-      @for (entry of entries(); track $index) {
+      @for (entry of entries(); track entry.id) {
 
         @if (entry.type === 'command') {
 
           <div class="terminal-line command-line">
-            <span class="prompt">visitor@portfolio:~$</span>
+            <span class="prompt">visitor&#64;portfolio:~$</span>
             <span>{{ entry.text }}</span>
           </div>
 
         } @else {
 
-          <div class="terminal-line output-line">
-            {{ entry.text }}
+          <div class="output">
+
+            @for (block of entry.blocks ?? []; track $index) {
+
+              @if (block.k === 'gap') {
+
+                <div class="tgap"></div>
+
+              } @else if (block.k === 'line') {
+
+                <div class="tline" [style.animation-delay.ms]="delay($index)">@for (seg of block.segs ?? []; track $index) {@if (seg.href) {<a class="tlink" [href]="seg.href" [attr.target]="seg.ext ? '_blank' : null" [attr.rel]="seg.ext ? 'noopener noreferrer' : null">{{ seg.t }}</a>} @else if (seg.cmd) {<button type="button" class="tcmd" (click)="runCommand(seg.cmd)">{{ seg.t }}</button>} @else {<span [class]="seg.cls ? 's-' + seg.cls : ''">{{ seg.t }}</span>}}</div>
+
+              } @else if (block.k === 'chips') {
+
+                <div class="chips" [style.animation-delay.ms]="delay($index)">
+                  @for (item of block.items ?? []; track item.name) {
+                    <span class="chip">{{ item.name }}@if (item.note) {<em>{{ item.note }}</em>}</span>
+                  }
+                </div>
+
+              } @else if (block.k === 'project') {
+
+                @if (block.card; as c) {
+
+                  <div class="pcard" [style.--pc]="c.project.color">
+
+                    <div class="pcard-preview">
+                      <img [src]="c.project.image" [alt]="c.project.name" class="pcard-image">
+                    </div>
+
+                    <div class="pcard-body">
+
+                      <div class="pcard-head">
+                        <h4>{{ c.project.name }}</h4>
+                        <span class="pcard-index">{{ c.index }} / {{ c.total }}</span>
+                      </div>
+
+                      <span class="pcard-tag">{{ c.project.tag }}</span>
+
+                      <p>{{ c.project.description }}</p>
+
+                      <div class="pcard-chips">
+                        @for (tech of c.project.stack; track tech) {
+                          <span class="chip">{{ tech }}</span>
+                        }
+                      </div>
+
+                      <div class="pcard-actions">
+                        <button type="button" class="pbtn" (click)="runCommand('project ' + c.prevId)">← Prev</button>
+                        <button type="button" class="pbtn" (click)="runCommand('project ' + c.nextId)">Next →</button>
+                        <button type="button" class="pbtn" (click)="runCommand('projects')">All projects</button>
+
+                        @if (c.project.repo) {
+                          <a class="pbtn pbtn-accent" [href]="c.project.repo" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+                        }
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                }
+
+              }
+
+            }
+
           </div>
 
         }
 
       }
 
-      <form class="terminal-input-row"
-            (submit)="$event.preventDefault(); execute(commandInput.value); commandInput.value = '';">
+      <form class="terminal-input-row" (submit)="onSubmit($event)">
 
         <label for="terminal-command" class="prompt">
-          visitor@portfolio:~$
+          visitor&#64;portfolio:~$
         </label>
 
-        <input
-          #commandInput
-          id="terminal-command"
-          type="text"
-          autocomplete="off"
-          spellcheck="false"
-          aria-label="Enter a terminal command"
-          placeholder="Type a command..."
-        />
+        <div class="input-wrap">
 
-        <span class="cursor"></span>
+          <span class="ghost" aria-hidden="true"><span class="ghost-typed">{{ draft() }}</span>{{ ghost() }}</span>
+
+          <input
+            #commandInput
+            id="terminal-command"
+            type="text"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            aria-label="Enter a terminal command"
+            placeholder="Type a command..."
+            [value]="draft()"
+            (input)="onInput($event)"
+            (keydown)="onKeydown($event)"
+          />
+
+        </div>
 
       </form>
 
+      @if (suggestions().length) {
+        <div class="suggest">
+          @for (s of suggestions(); track s.value) {
+            <button type="button" class="tcmd" (click)="applySuggestion(s)">{{ s.label }}</button>
+          }
+        </div>
+      }
+
+    </div>
+
+    <div class="terminal-quick">
+      <span class="quick-label">TRY</span>
+      @for (c of quickCommands; track c) {
+        <button type="button" class="quick-chip" (click)="runCommand(c)">{{ c }}</button>
+      }
     </div>
 
     <div class="terminal-footer">
@@ -85,7 +171,7 @@
   </div>
 
   <p class="terminal-hint">
-    Try <code>help</code> to get started.
+    Try <code>help</code> to get started. Use <kbd>↑</kbd> <kbd>↓</kbd> for history and <kbd>Tab</kbd> to autocomplete.
   </p>
 
 </section>

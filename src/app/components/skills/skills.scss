@@ -952,3 +952,133 @@
     animation: none !important;
   }
 }
+/* =====================================================
+   SKILLS  v5  -  more skills
+   Paste this at the very END of skills.scss (after the v4 block).
+   ===================================================== */
+
+/* ---------- Tabs: wrap onto a second row instead of scrolling sideways ---------- */
+
+.skills-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  grid-auto-flow: unset;
+  grid-auto-columns: unset;
+  overflow: visible;
+}
+
+.tab {
+  flex: 1 1 auto;
+}
+
+/* the sliding highlight is now positioned (x, y, width, height) from skills.ts */
+.tab-indicator {
+  top: 0;
+  bottom: auto;
+  height: 0;
+}
+
+/* ---------- Icon instead of a logo (skills without a brand logo) ---------- */
+
+.logo-icon {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--accent-purple);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.3s ease;
+}
+
+.skill-card:hover .logo-icon {
+  transform: scale(1.13);
+}
+
+.spotlight-logo .logo-icon {
+  width: 34px;
+  height: 34px;
+  stroke: var(--accent-cyan);
+}
+
+/* dark logos (GitHub, Unity, Three.js) sit on a light tile so they stay visible */
+.logo-container.light,
+.spotlight-logo.light {
+  border-color: #ffffff40;
+  background: #f5f2faeb;
+}
+
+/* ---------- Level badge: softer color for learning / coursework / planned ---------- */
+
+.skill-level[data-tone='soft'] {
+  border-color: #70d6f52b;
+  background: #70d6f50d;
+  color: #9fe3f7;
+
+  .level-dot {
+    background: var(--accent-cyan);
+    box-shadow: 0 0 10px #70d6f577;
+  }
+}
+
+/* ---------- "Also" chips under the cards ---------- */
+
+.also {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #ffffff0f;
+}
+
+.also-label {
+  flex-shrink: 0;
+  padding-top: 6px;
+  color: var(--accent-purple);
+  font: 9px var(--font-code);
+  letter-spacing: 1.5px;
+}
+
+.also-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.also-chip {
+  padding: 5px 11px;
+  border: 1px solid #ffffff14;
+  border-radius: 20px;
+  background: #ffffff05;
+  color: var(--text-muted);
+  font-size: 11px;
+  transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+
+  &:hover {
+    border-color: #9875f577;
+    background: #9875f510;
+    color: #fff;
+  }
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 600px) {
+  .tab-icon {
+    display: none;
+  }
+
+  .tab {
+    padding: 10px 12px;
+  }
+
+  .also {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .also-label {
+    padding-top: 0;
+  }
+}

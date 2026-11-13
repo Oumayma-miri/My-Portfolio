@@ -9,10 +9,11 @@ interface Project {
   name: string;
   subtitle: string;
   description: string;
-  category: Exclude<Category, 'All'>;
+  categories: Exclude<Category, 'All'>[];
   technologies: string[];
   year: string;
   accent: string;
+  image?: string;
   github?: string;
   features: string[];
 }
@@ -44,10 +45,11 @@ export class Projects {
       subtitle: 'Healthcare Statistics Management',
       description:
         'A web application developed during my internship at the Circonscription Sanitaire de Sidi Bouzid to manage and visualize healthcare statistics across 24 regions.',
-      category: 'Frontend',
+      categories: ['Frontend'],
       technologies: ['Angular 18+', 'TypeScript', 'CSS', 'JSON Server'],
       year: '2026',
       accent: 'purple',
+      image: '/images/health.png',
       github: 'https://github.com/Oumayma-miri/health-dashboard-final',
       features: [
         'Healthcare statistics visualization',
@@ -63,10 +65,11 @@ export class Projects {
       subtitle: 'Ride Sharing & Reservations',
       description:
         'A carpooling web platform that allows users to publish journeys, search for available rides and manage reservations.',
-      category: 'Full Stack',
+      categories: ['Full Stack', 'Backend'],
       technologies: ['PHP', 'MySQL', 'Bootstrap', 'PDO'],
       year: '2025',
       accent: 'cyan',
+      image: '/images/carpool.png',
       github: 'https://github.com/Oumayma-miri/covoiturage',
       features: [
         'User registration and authentication',
@@ -79,17 +82,29 @@ export class Projects {
       id: 'product',
       number: '03',
       name: 'Product Manager App',
-      subtitle: 'Product Management Application',
+      subtitle: 'AI-Assisted Inventory Management Mobile App',
       description:
-        'A Java application focused on product management, database operations and AI-assisted functionality.',
-      category: 'Backend',
-      technologies: ['Java', 'MySQL', 'SQLite', 'Gemini API'],
+        'A team-developed mobile application designed to simplify product and inventory management. Built with React Native and Expo, backed by a Java API and MongoDB database, it includes product tracking, category and batch management, barcode scanning, and AI-assisted features.',
+      categories: ['Full Stack', 'Backend'],
+      technologies: [
+        'React Native',
+        'Expo',
+        'Java',
+        'MongoDB',
+        'Maven',
+        'Axios',
+        'Gemini API'
+      ],
       year: '2025',
       accent: 'pink',
+      image: '/images/product.png',
       features: [
-        'Product management',
-        'Database integration',
-        'AI API integration'
+        'Product, category and batch management',
+        'Inventory tracking and expiry date monitoring',
+        'Barcode scanning',
+        'AI-assisted product features using Gemini API',
+        'Java backend and MongoDB database integration',
+        'Mobile application with React Native and Expo'
       ]
     },
     {
@@ -99,10 +114,11 @@ export class Projects {
       subtitle: 'Personal Resume Builder',
       description:
         'A frontend web application that allows users to create and customize their CV through a simple interface.',
-      category: 'Frontend',
+      categories: ['Frontend'],
       technologies: ['HTML', 'CSS', 'JavaScript'],
       year: '2025',
       accent: 'orange',
+      image: '/images/cv.png',
       features: [
         'CV creation interface',
         'User authentication screens',
@@ -118,9 +134,7 @@ export class Projects {
       return this.projects;
     }
 
-    return this.projects.filter(
-      project => project.category === filter
-    );
+    return this.projects.filter(project => project.categories.includes(filter));
   });
 
   protected setFilter(filter: Category): void {

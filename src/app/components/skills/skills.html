@@ -23,7 +23,7 @@
       <!-- LEFT: switcher + technologies -->
       <div class="skills-panel">
 
-        <div class="skills-tabs" role="tablist" aria-label="Technology categories">
+        <div class="skills-tabs" role="tablist" aria-label="Skill categories">
           <span class="tab-indicator" aria-hidden="true"></span>
 
           @for (category of categories; track category.name) {
@@ -39,7 +39,7 @@
                 <path [attr.d]="category.icon" />
               </svg>
               <span class="tab-name">{{ category.name }}</span>
-              <span class="tab-count">{{ category.skills.length }}</span>
+              <span class="tab-count">{{ totalOf(category) }}</span>
 
             </button>
           }
@@ -52,7 +52,7 @@
           </div>
 
           <span class="tech-count">
-            {{ visibleSkills.length }} TECHNOLOGIES
+            {{ totalOf(currentCategory) }} SKILLS
           </span>
         </div>
 
@@ -71,12 +71,19 @@
               [attr.aria-pressed]="isSelected(skill)"
               (click)="selectSkill(skill)">
 
-              <span class="logo-container">
-                <img
-                  [src]="skill.logo"
-                  [alt]="skill.name + ' logo'"
-                  loading="lazy"
-                />
+              <span class="logo-container" [class.light]="skill.onLight && showLogo(skill)">
+                @if (showLogo(skill)) {
+                  <img
+                    [src]="skill.logo"
+                    [alt]="skill.name + ' logo'"
+                    loading="lazy"
+                    (error)="onLogoError(skill)"
+                  />
+                } @else {
+                  <svg class="logo-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path [attr.d]="iconOf(skill)" />
+                  </svg>
+                }
               </span>
 
               <span class="skill-meta">
@@ -91,6 +98,19 @@
           }
 
         </div>
+
+        <!-- SUPPORTING SKILLS (small chips) -->
+        @if (currentCategory.also; as also) {
+          <div class="also">
+            <span class="also-label">ALSO</span>
+
+            <div class="also-chips">
+              @for (item of also; track item) {
+                <span class="also-chip">{{ item }}</span>
+              }
+            </div>
+          </div>
+        }
 
       </div>
 
@@ -107,11 +127,18 @@
             <span class="orbit-ring orbit-ring-two"></span>
           </div>
 
-          <div class="spotlight-logo">
-            <img
-              [src]="selectedSkill().logo"
-              [alt]="selectedSkill().name + ' logo'"
-            />
+          <div class="spotlight-logo" [class.light]="selectedSkill().onLight && showLogo(selectedSkill())">
+            @if (showLogo(selectedSkill())) {
+              <img
+                [src]="selectedSkill().logo"
+                [alt]="selectedSkill().name + ' logo'"
+                (error)="onLogoError(selectedSkill())"
+              />
+            } @else {
+              <svg class="logo-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path [attr.d]="iconOf(selectedSkill())" />
+              </svg>
+            }
           </div>
 
         </div>
@@ -119,7 +146,7 @@
         <div class="spotlight-content">
 
           <span class="eyebrow">
-            SELECTED TECHNOLOGY
+            SELECTED SKILL
           </span>
 
           <h4>
@@ -130,7 +157,7 @@
             {{ selectedSkill().description }}
           </p>
 
-          <span class="skill-level">
+          <span class="skill-level" [attr.data-tone]="tone(selectedSkill().level)">
             <span class="level-dot"></span>
             {{ selectedSkill().level }}
           </span>

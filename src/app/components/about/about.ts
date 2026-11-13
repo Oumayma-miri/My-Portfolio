@@ -64,14 +64,14 @@ export class About implements AfterViewInit, OnDestroy {
 
   protected readonly intro: string[] = [
     "I'm an IT student specializing in Multimedia & Web Development at ISET Sidi Bouzid. I enjoy turning ideas into interfaces that work well and feel good to use. I build with Angular and TypeScript, and I care as much about how a product looks and moves as about how it is built underneath.",
-    "Two internships gave me hands-on experience: a healthcare statistics dashboard covering 24 regions, and a CV creation website. Alongside my studies I keep building, from a ride-sharing platform in PHP and MySQL to a Java product manager with Gemini API integration, and I like experimenting with Unity.",
+    "Through two internships, I gained practical experience in web development, building a healthcare statistics dashboard designed to manage and visualize data across 24 regions, as well as a dynamic CV creation website. Beyond these professional experiences, I have developed a range of academic and personal projects, including a ride-sharing platform using PHP and MySQL and a Java-based Product Management application integrated with the Gemini API, alongside many other projects that have strengthened my technical skills, problem-solving abilities, and experience in developing practical digital solutions.",
   ];
 
   protected readonly facts: Fact[] = [
     { label: 'FOCUS', value: 'Development and UI/UX' },
     { label: 'STUDYING', value: 'Multimedia & Web Development, ISET Sidi Bouzid' },
     { label: 'OPEN TO', value: 'PFE opportunities' },
-    { label: 'LANGUAGES', value: '[Arabic, French, English]' },
+    { label: 'LANGUAGES', value: 'Arabic,   French,   English' },
   ];
 
   protected readonly interests: string[] = [
@@ -88,22 +88,22 @@ export class About implements AfterViewInit, OnDestroy {
 
   protected readonly education: EducationItem[] = [
     {
-      period: '[Year] - Present',
+      period: '2024 - Present',
       title: 'Multimedia & Web Development',
       place: 'ISET Sidi Bouzid',
       text: 'Studying web development, databases and multimedia, with a strong focus on building practical projects and internships.',
       current: true,
     },
     {
-      period: '[Year]',
-      title: '[Baccalaureate, section]',
-      place: '[Your high school]',
-      text: '[One short line about what you studied or achieved.]',
+      period: '2024',
+      title: 'High-school diploma in experimental sciences',
+      place: 'Ben Oun High School, Sidi Bouzid',
+      text: 'Completed my high school education with a focus on experimental sciences.',
     },
   ];
 
   protected readonly stats: Stat[] = [
-    { label: 'PROJECTS', value: 4 },
+    { label: 'PROJECTS', value: 6 },
     { label: 'INTERNSHIPS', value: 2 },
     { label: 'TECHNOLOGIES', value: 15 },
   ];

@@ -516,3 +516,26 @@
     padding: 22px;
   }
 }
+
+.project-image {
+  width: min(100%, 420px);
+  max-height: 290px;
+  object-fit: contain;
+  border-radius: 18px;
+}
+
+.image-placeholder {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  color: #B8B4D0;
+  font: 10px var(--font-code);
+  letter-spacing: 1px;
+  text-align: center;
+
+  small {
+    color: var(--text-muted);
+    font-size: 9px;
+    letter-spacing: 0;
+  }
+}

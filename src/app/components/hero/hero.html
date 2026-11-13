@@ -1,4 +1,3 @@
-
 <section class="hero" id="home">
 
   <!-- LEFT CONTENT -->
@@ -70,7 +69,7 @@
 
     </div>
 
-    <!-- DEVELOPER CARD -->
+    <!-- DEVELOPER CARD (draggable) -->
     <div class="developer-card">
 
       <div class="card-top">
@@ -79,10 +78,26 @@
       </div>
 
       <div class="profile-area">
-        <div class="profile-avatar">
-          <img src="images/oumayma.png" alt="Oumayma EL MIRI">
-        </div>
-        
+        <!-- click the photo to play the wave video -->
+        <button
+          type="button"
+          class="avatar-btn"
+          [class.watched]="waveWatched()"
+          aria-label="Play a short video: Oumayma says hi"
+          [attr.aria-expanded]="waveOpen()"
+          (click)="openWave()"
+          (pointerenter)="prepareWave()"
+          (focus)="prepareWave()">
+
+          <span class="profile-avatar">
+            <img src="images/oumayma.png" alt="" draggable="false">
+          </span>
+
+          <span class="avatar-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z" /></svg>
+          </span>
+
+        </button>
 
         <div class="profile-info">
           <h3>Oumayma EL MIRI</h3>
@@ -116,9 +131,63 @@
         <span>BUILDING THE FUTURE ↗</span>
       </div>
 
+      <!-- WAVE VIDEO: grows out of the photo and covers the card -->
+      <div class="wave" role="region" aria-label="Video: Oumayma says hi"
+           [attr.inert]="waveOpen() ? null : ''" [attr.aria-hidden]="!waveOpen()">
+
+        <video
+          #waveVideo
+          class="wave-video"
+          playsinline
+          preload="none"
+          [src]="waveSrc"
+          (click)="togglePlay()"
+          (timeupdate)="onWaveTime()"
+          (ended)="closeWave()"
+          (waiting)="waveBuffering.set(true)"
+          (playing)="waveBuffering.set(false)"
+          (canplay)="waveBuffering.set(false)"
+          (error)="onWaveError()"></video>
+
+        <span class="wave-shade"></span>
+        <span class="wave-loading" [class.show]="waveBuffering() && !waveError()"></span>
+
+        @if (waveError()) {
+          <span class="wave-error">VIDEO UNAVAILABLE</span>
+        }
+
+        <div class="wave-bar">
+          <span class="wave-label">HI, I'M OUMAYMA</span>
+
+          <div class="wave-actions">
+            @if (waveHasSound) {
+              <button type="button" class="wave-btn" (click)="toggleMute()"
+                      [attr.aria-label]="waveMuted() ? 'Unmute video' : 'Mute video'">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  @if (waveMuted()) {
+                    <path d="M11 5L6 9H2v6h4l5 4V5zM22 9l-6 6M16 9l6 6" />
+                  } @else {
+                    <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                  }
+                </svg>
+              </button>
+            }
+
+            <button type="button" class="wave-btn" (click)="closeWave()" aria-label="Close video">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12" /></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="wave-progress">
+          <span class="wave-progress-fill" [style.width.%]="waveProgress()"></span>
+        </div>
+
+      </div>
+
     </div>
 
-    <!-- FLOATING TAGS -->
+    <!-- FLOATING TAGS (they follow the card) -->
     <div class="floating-tag tag-angular">
       <span>◈</span> Angular
     </div>
@@ -126,6 +195,16 @@
     <div class="floating-tag tag-code">
       <span>&lt;/&gt;</span> Code
     </div>
+
+    <!-- DRAG HINT / RESET -->
+    <button
+      type="button"
+      class="drag-hint"
+      [class.moved]="moved()"
+      [disabled]="!moved()"
+      (click)="resetCard()">
+      {{ moved() ? '↺ RESET POSITION' : 'DRAG THE CARD' }}
+    </button>
 
   </div>
 

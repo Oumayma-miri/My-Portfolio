@@ -15,7 +15,8 @@
 
       <div class="project-counter">
         <strong>04</strong>
-        <span>PROJECTS</span>
+        <span>PROJECTS </span>
+        <span>to show</span>
       </div>
     </div>
 
@@ -60,49 +61,12 @@
 
             <div class="visual-center">
 
-              @if (project.id === 'health') {
-                <div class="mock-dashboard">
-                  <div class="mock-sidebar">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </div>
-                  <div class="mock-content">
-                    <div class="mock-title"></div>
-                    <div class="mock-stats">
-                      <span></span><span></span><span></span>
-                    </div>
-                    <div class="mock-chart">
-                      <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                    </div>
-                  </div>
-                </div>
+              @if (project.image) {
+                <img
+                  [src]="project.image"
+                  [alt]="project.name"
+                  class="project-image">
               }
-
-              @if (project.id === 'carpool') {
-                <div class="visual-symbol car-symbol">
-                  <span>↗</span>
-                  <strong>GO</strong>
-                  <small>FIND YOUR RIDE</small>
-                </div>
-              }
-
-              @if (project.id === 'product') {
-                <div class="visual-symbol product-symbol">
-                  <span>◈</span>
-                  <strong>PRODUCT</strong>
-                  <small>MANAGEMENT SYSTEM</small>
-                </div>
-              }
-
-              @if (project.id === 'cv') {
-                <div class="visual-symbol cv-symbol">
-                  <span>CV</span>
-                  <strong>YOUR STORY.</strong>
-                  <small>BUILT WITH CODE</small>
-                </div>
-              }
-
             </div>
 
             <div class="visual-bottom">
@@ -115,7 +79,7 @@
           <div class="project-info">
 
             <div class="project-meta">
-              <span>{{ project.category }}</span>
+              <span>{{ project.categories.join(' · ') }}</span>
               <span>{{ project.year }}</span>
             </div>
 
@@ -172,7 +136,7 @@
           <div class="modal-content">
 
             <span class="section-label">
-              {{ project.category }} · {{ project.year }}
+              {{ project.categories.join(' · ') }} · {{ project.year }}
             </span>
 
             <h2>{{ project.name }}<span>.</span></h2>

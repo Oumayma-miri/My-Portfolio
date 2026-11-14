@@ -257,6 +257,7 @@
   left: 50%;
   border: 1px solid #ffffff0f; /* faint track */
   border-radius: 50%;
+  pointer-events: none;
 
   /* comet tail */
   &::after {
@@ -324,6 +325,7 @@
   position: absolute;
   top: -19px;
   left: 50%;
+  pointer-events: auto;
   display: grid;
   place-items: center;
   width: 38px;

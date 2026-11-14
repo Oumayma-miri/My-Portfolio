@@ -78,7 +78,7 @@ export class Experience implements AfterViewInit, OnDestroy {
     {
       company: 'Circonscription Sanitaire de Sidi Bouzid',
       role: 'Web Development Intern',
-      period: '[Month Year] - [Month Year]',
+      period: 'January, 2026 - February, 2026',
       location: 'Sidi Bouzid, Tunisia',
       project: 'Health Dashboard',
       summary:
@@ -87,7 +87,7 @@ export class Experience implements AfterViewInit, OnDestroy {
         'Built the dashboard interface with Angular 18+ and TypeScript.',
         'Organized and displayed health statistics for 24 regions in a clear, readable layout.',
         'Managed application data with JSON Server and localStorage.',
-        '[Add a challenge you solved or a result the team noticed.]',
+        'Implemented responsive design to ensure the dashboard works well on different screen sizes.',
       ],
       stack: ['Angular', 'TypeScript', 'CSS', 'JSON Server', 'localStorage'],
       highlights: [{ value: '24', label: 'REGIONS COVERED' }],
@@ -96,15 +96,15 @@ export class Experience implements AfterViewInit, OnDestroy {
     {
       company: 'Infosmile',
       role: 'Web Development Intern',
-      period: '[Month Year] - [Month Year]',
-      location: '[City, Tunisia]',
+      period: 'January, 2025 - February, 2025',
+      location: 'Sidi Bouzid, Tunisia',
       project: 'CV Creator',
       summary:
-        'Developed a website for creating CVs, built with the core technologies of the web.',
+        'Developed the front-end of website for creating CVs, built with the core technologies of the web.',
       tasks: [
         'Built the pages and interface with HTML, CSS and JavaScript.',
         'Structured the content so a CV can be created in a clean, consistent format.',
-        '[Add a feature you are proud of.]',
+        'Added interactivity to the interface with JavaScript.',
       ],
       stack: ['HTML', 'CSS', 'JavaScript'],
     },

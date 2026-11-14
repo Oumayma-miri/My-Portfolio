@@ -1,24 +1,98 @@
-
 <nav class="navbar" aria-label="Main navigation">
-  <a href="#home" class="logo" aria-label="OM - Home">
+
+  <a href="#home" class="logo" aria-label="OM - Home" (click)="go($event, 'home')">
     <span class="logo-mark">OM</span>
     <span class="logo-dot"></span>
   </a>
 
+  <!-- desktop links -->
   <div class="nav-links">
-    <a href="#home" class="active">Home</a>
-    <a href="#about">About</a>
-    <a href="#terminal">Terminal</a>
-    <a href="#projects">Projects</a>
-    <a href="#skills">Skills</a>
-    <a href="#journey">Journey</a>
-    <a href="#code">Code</a>
-    <a href="#contact">Contact</a>
-    
+    @for (link of links; track link.id) {
+      <a
+        [href]="'#' + link.id"
+        [class.active]="active() === link.id"
+        [attr.aria-current]="active() === link.id ? 'location' : null"
+        (click)="go($event, link.id)">
+        {{ link.label }}
+      </a>
+    }
   </div>
 
-  <a href="#contact" class="contact-btn">
-    <span>Let's talk</span>
-    <span class="contact-arrow">↗</span>
-  </a>
+  <div class="nav-actions">
+
+    <a href="#contact" class="contact-btn" (click)="go($event, 'contact')">
+      <span>Let's talk</span>
+      <span class="contact-arrow">↗</span>
+    </a>
+
+    <!-- menu button (phones and tablets) -->
+    <button
+      type="button"
+      class="menu-btn"
+      [class.open]="menuOpen()"
+      [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="mobile-menu"
+      (click)="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </div>
+
+  <!-- scroll progress -->
+  <span class="nav-progress" aria-hidden="true"></span>
+
+  <!-- mobile menu panel -->
+  <div
+    class="mobile-menu"
+    id="mobile-menu"
+    [class.open]="menuOpen()"
+    [attr.inert]="menuOpen() ? null : ''"
+    [attr.aria-hidden]="!menuOpen()">
+
+    <div class="mm-links">
+      @for (link of links; track link.id; let i = $index) {
+        <a
+          class="mm-link"
+          [href]="'#' + link.id"
+          [class.active]="active() === link.id"
+          [attr.aria-current]="active() === link.id ? 'location' : null"
+          (click)="go($event, link.id)">
+
+          <span class="mm-num">0{{ i + 1 }}</span>
+          <span class="mm-label">{{ link.label }}</span>
+          <span class="mm-arrow">↗</span>
+
+        </a>
+      }
+    </div>
+
+    <div class="mm-foot">
+
+      <div class="mm-socials">
+        @for (s of socials; track s.label) {
+          <a
+            class="mm-social"
+            [href]="s.href"
+            [attr.target]="s.href.startsWith('http') ? '_blank' : null"
+            [attr.rel]="s.href.startsWith('http') ? 'noopener noreferrer' : null">
+            {{ s.label }}
+          </a>
+        }
+      </div>
+
+      <span class="mm-status">
+        <span class="mm-status-dot"></span>
+        Open to PFE opportunities
+      </span>
+
+    </div>
+
+  </div>
+
 </nav>
+
+<!-- dimmed page behind the open menu (tap to close) -->
+<div class="menu-backdrop" [class.open]="menuOpen()" (click)="closeMenu()" aria-hidden="true"></div>

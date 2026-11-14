@@ -1,22 +1,61 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 :root {
-  --bg-primary: #090B16;
-  --bg-secondary: #111426;
-  --bg-card: #171A2D;
+  /* Base: ink and cream */
+  --ink: #050505;
+  --cream: #ECE6DC;
 
-  --accent-purple: #9875F5;
-  --accent-burgundy: #54243F;
-  --accent-cyan: #70D6F5;
+  /* Surfaces (dark theme: ink is the page, cream is the text) */
+  --bg-primary: var(--ink);
+  --bg-secondary: #0F0D0E;
+  --bg-card: #181416;
+  --line: rgba(236, 230, 220, 0.12);
 
-  --text-primary: #F5F2FA;
-  --text-muted: #A5A5B8;
+  /* Accents */
+  --accent-primary: #E65BC4;         /* orchid pink: buttons, links, active states */
+  --accent-neon: #FF3FD0;            /* neon pink: glows, shadows, light effects only */
+  --accent-deep: #5A1C4B;            /* dark orchid, for gradients and fills */
 
-  --font-heading: 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', sans-serif;
-  --font-code: 'JetBrains Mono', monospace;
+  /* RGB triplets, for glows/shadows: rgba(var(--accent-neon-rgb), 0.45) */
+  --accent-primary-rgb: 230, 91, 196;
+  --accent-neon-rgb: 255, 63, 208;
+
+  --glow-soft: 0 0 24px rgba(var(--accent-neon-rgb), 0.35);
+  --glow-strong: 0 0 12px rgba(var(--accent-neon-rgb), 0.6),
+                 0 0 40px rgba(var(--accent-neon-rgb), 0.35);
+
+  /* Old names kept as aliases, so existing components and animations
+     keep working without touching them */
+  --accent-purple: var(--accent-primary);
+  --accent-cyan: var(--accent-neon);
+  --accent-burgundy: var(--accent-deep);
+
+  --text-primary: var(--cream);
+  --text-muted: #A39C92;
+  --on-accent: var(--ink);
+
+  /* Typography */
+  --font-heading: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Instrument Sans', sans-serif;
+  --font-code: 'IBM Plex Mono', monospace;
+}
+
+/* Optional: add class="theme-cream" to a section for a cream band.
+   Variables flip, so everything inside adapts automatically. */
+.theme-cream {
+  --bg-primary: var(--cream);
+  --bg-secondary: #E2DBCF;
+  --bg-card: #F5F0E8;
+  --line: rgba(5, 5, 5, 0.14);
+  --accent-primary: #B3248F;         /* darker orchid, readable on cream */
+  --accent-primary-rgb: 179, 36, 143;
+  --text-primary: var(--ink);
+  --text-muted: #5E574F;
+  --on-accent: var(--cream);
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 * {
@@ -37,6 +76,11 @@ body {
   overflow-x: hidden;
 }
 
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
 button, a {
   font: inherit;
 }
@@ -47,8 +91,13 @@ a {
 }
 
 ::selection {
-  background: var(--accent-purple);
-  color: white;
+  background: var(--accent-primary);
+  color: var(--on-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 3px;
 }
 
 ::-webkit-scrollbar {
@@ -56,6 +105,6 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--accent-purple);
+  background: var(--accent-primary);
   border-radius: 10px;
 }

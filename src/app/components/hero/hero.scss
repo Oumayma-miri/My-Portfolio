@@ -1,4 +1,3 @@
-
 .hero {
   min-height: 100vh;
   width: 100%;
@@ -20,7 +19,7 @@
   gap: 10px;
 
   font: 500 11px var(--font-code);
-  color: var(--accent-cyan);
+  color: var(--accent-primary);
   letter-spacing: 1.5px;
   margin-bottom: 35px;
 }
@@ -28,9 +27,9 @@
 .status-dot {
   width: 8px;
   height: 8px;
-  background: var(--accent-cyan);
+  background: var(--accent-neon);
   border-radius: 50%;
-  box-shadow: 0 0 12px var(--accent-cyan);
+  box-shadow: 0 0 12px var(--accent-neon);
 }
 
 .intro-label {
@@ -48,11 +47,12 @@
   span {
     display: block;
 
+    /* orchid -> soft pink -> cream */
     background: linear-gradient(
       110deg,
-      #9875F5,
-      #D7A2D3,
-      #70D6F5
+      #E65BC4,
+      #F29AD9,
+      #ECE6DC
     );
 
     background-clip: text;
@@ -62,11 +62,11 @@
 
 .hero h2 {
   font: 500 clamp(19px, 2.2vw, 27px) var(--font-heading);
-  color: #D1CBE1;
+  color: #CFC8BC;
   margin-top: 22px;
 
   span {
-    color: var(--accent-purple);
+    color: var(--accent-primary);
   }
 }
 
@@ -95,21 +95,21 @@
 }
 
 .btn-primary {
-  color: #090B16;
-  background: var(--accent-purple);
+  color: var(--on-accent);
+  background: var(--accent-primary);
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 30px #9875F555;
+    box-shadow: 0 10px 30px rgba(var(--accent-neon-rgb), 0.45);
   }
 }
 
 .btn-secondary {
-  border: 1px solid #ffffff25;
+  border: 1px solid rgba(236, 230, 220, 0.2);
 
   &:hover {
-    border-color: var(--accent-purple);
-    background: #9875F515;
+    border-color: var(--accent-primary);
+    background: rgba(var(--accent-primary-rgb), 0.09);
   }
 }
 
@@ -124,7 +124,7 @@
     transition: 0.3s;
 
     &:hover {
-      color: var(--accent-cyan);
+      color: var(--accent-primary);
     }
   }
 }
@@ -147,16 +147,16 @@
 
   background: linear-gradient(
     145deg,
-    rgba(30, 31, 57, 0.94),
-    rgba(17, 20, 38, 0.95)
+    rgba(28, 22, 26, 0.94),
+    rgba(10, 8, 9, 0.96)
   );
 
-  border: 1px solid #9875F550;
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.35);
   border-radius: 20px;
 
   box-shadow:
-    0 20px 80px #00000055,
-    0 0 40px #9875F518;
+    0 20px 80px rgba(0, 0, 0, 0.55),
+    0 0 40px rgba(var(--accent-neon-rgb), 0.14);
 
   backdrop-filter: blur(20px);
 
@@ -173,7 +173,7 @@
 }
 
 .card-status {
-  color: var(--accent-cyan);
+  color: var(--accent-primary);
 }
 
 .profile-area {
@@ -189,8 +189,8 @@
   flex-shrink: 0;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid rgba(152, 117, 245, 0.65);
-  box-shadow: 0 0 18px rgba(152, 117, 245, 0.2);
+  border: 2px solid rgba(var(--accent-primary-rgb), 0.7);
+  box-shadow: 0 0 18px rgba(var(--accent-neon-rgb), 0.25);
 
   img {
     width: 100%;
@@ -214,7 +214,7 @@
 
 .card-divider {
   height: 1px;
-  background: #ffffff18;
+  background: rgba(236, 230, 220, 0.1);
   margin: 22px 0;
 }
 
@@ -230,7 +230,7 @@
   span {
     font: 10px var(--font-code);
     letter-spacing: 1px;
-    color: var(--accent-purple);
+    color: var(--accent-primary);
   }
 
   strong {
@@ -250,6 +250,9 @@
 /* =====================================================
    HERO ORBIT SYSTEM
    Two rotating comet rings behind the developer card
+   (class names .ring-purple / .ring-cyan are kept so the
+   template doesn't change: purple ring is now orchid pink,
+   cyan ring is now cream)
    ===================================================== */
 
 .hero-visual {
@@ -272,8 +275,8 @@
 
   background: radial-gradient(
     circle,
-    rgba(152, 117, 245, 0.12) 0%,
-    rgba(84, 36, 63, 0.08) 40%,
+    rgba(var(--accent-neon-rgb), 0.14) 0%,
+    rgba(90, 28, 75, 0.14) 40%,
     transparent 72%
   );
 
@@ -285,8 +288,8 @@
 /* Orbit container */
 
 .hero-orbit {
-  --orbit-purple: #9875f5;
-  --orbit-cyan: #70d6f5;
+  --orbit-purple: #E65BC4;  /* orchid pink */
+  --orbit-cyan: #ECE6DC;    /* cream */
 
   position: absolute;
   top: 50%;
@@ -308,13 +311,13 @@
   left: 50%;
 
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(236, 230, 220, 0.06);
 
   transform-origin: center;
   animation: hero-orbit-spin 25s linear infinite;
 }
 
-/* Purple orbit */
+/* Pink orbit */
 
 .ring-purple {
   --ring-color: var(--orbit-purple);
@@ -324,12 +327,12 @@
 
   margin: -155px 0 0 -220px;
 
-  border-color: rgba(152, 117, 245, 0.16);
+  border-color: rgba(var(--accent-primary-rgb), 0.2);
 
   animation-duration: 28s;
 }
 
-/* Cyan orbit */
+/* Cream orbit */
 
 .ring-cyan {
   --ring-color: var(--orbit-cyan);
@@ -339,7 +342,7 @@
 
   margin: -205px 0 0 -175px;
 
-  border-color: rgba(112, 214, 245, 0.14);
+  border-color: rgba(236, 230, 220, 0.14);
 
   animation-direction: reverse;
   animation-duration: 36s;
@@ -443,9 +446,9 @@
   width: 5px;
   height: 5px;
 
-  background: var(--orbit-purple);
+  background: var(--accent-neon);
 
-  box-shadow: 0 0 12px var(--orbit-purple);
+  box-shadow: 0 0 12px var(--accent-neon);
 }
 
 /* Rotation */
@@ -524,15 +527,15 @@
   z-index: 3;
   padding: 12px 16px;
 
-  background: #171A2D;
-  border: 1px solid #ffffff20;
+  background: var(--bg-card);
+  border: 1px solid rgba(236, 230, 220, 0.14);
   border-radius: 10px;
 
   font: 12px var(--font-code);
-  box-shadow: 0 10px 30px #00000055;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
 
   span {
-    color: var(--accent-cyan);
+    color: var(--accent-primary);
   }
 }
 
@@ -608,11 +611,10 @@
 
 .rotating-role {
   display: inline-block;
-  color: var(--accent-purple);
-  text-shadow: 0 0 20px #9875F530;
+  color: var(--accent-primary);
+  text-shadow: 0 0 20px rgba(var(--accent-neon-rgb), 0.35);
 }
 /* =====================================================
-   PASTE AT THE VERY END OF hero.scss
    - bigger profile photo
    - draggable card
    ===================================================== */
@@ -651,10 +653,10 @@
 
   &.is-dragging {
     cursor: grabbing;
-    border-color: #9875f5a8;
+    border-color: rgba(var(--accent-primary-rgb), 0.7);
     box-shadow:
-      0 30px 90px #00000070,
-      0 0 50px #9875f530;
+      0 30px 90px rgba(0, 0, 0, 0.7),
+      0 0 50px rgba(var(--accent-neon-rgb), 0.32);
   }
 }
 
@@ -674,10 +676,10 @@
   width: fit-content;
   margin: 0 auto;
   padding: 6px 12px;
-  border: 1px solid #ffffff14;
+  border: 1px solid rgba(236, 230, 220, 0.08);
   border-radius: 20px;
-  background: #ffffff05;
-  color: #ffffff59;
+  background: rgba(236, 230, 220, 0.02);
+  color: rgba(236, 230, 220, 0.4);
   font: 9px var(--font-code);
   letter-spacing: 1.4px;
   white-space: nowrap;
@@ -685,23 +687,21 @@
   transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
 
   &.moved {
-    border-color: #70d6f544;
-    color: var(--accent-cyan);
+    border-color: rgba(var(--accent-primary-rgb), 0.4);
+    color: var(--accent-primary);
     cursor: pointer;
 
     &:hover {
-      background: #70d6f510;
+      background: rgba(var(--accent-primary-rgb), 0.1);
     }
   }
 
   &:focus-visible {
-    outline: 2px solid var(--accent-cyan);
+    outline: 2px solid var(--accent-primary);
     outline-offset: 3px;
   }
 }
 /* =====================================================
-   PASTE AT THE VERY END of hero.scss, AFTER the previous
-   hero-additions.scss block.
    Wave video: grows out of the photo and covers the card.
    ===================================================== */
 
@@ -723,12 +723,12 @@
   }
 
   &:hover .profile-avatar {
-    border-color: #9875f5;
-    box-shadow: 0 0 26px #9875f540;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 26px rgba(var(--accent-neon-rgb), 0.35);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--accent-cyan);
+    outline: 2px solid var(--accent-primary);
     outline-offset: 4px;
   }
 
@@ -737,7 +737,7 @@
     content: '';
     position: absolute;
     inset: -4px;
-    border: 1.5px solid #9875f5;
+    border: 1.5px solid var(--accent-neon);
     border-radius: 50%;
     opacity: 0;
     pointer-events: none;
@@ -763,10 +763,10 @@
   place-items: center;
   width: 24px;
   height: 24px;
-  border: 2px solid #171a2d;
+  border: 2px solid var(--bg-card);
   border-radius: 50%;
-  background: var(--accent-purple);
-  color: #0d0f1f;
+  background: var(--accent-primary);
+  color: var(--ink);
 
   svg {
     width: 9px;
@@ -784,7 +784,7 @@
   z-index: 5;
   overflow: hidden;
   border-radius: 19px;
-  background: #0b0d1a;
+  background: #0A0708;
   visibility: hidden;
   clip-path: circle(0px at 50% 20%);
 }
@@ -803,7 +803,7 @@
 .wave-shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, #05060ecc 0, transparent 26%, transparent 72%, #05060eb3 100%);
+  background: linear-gradient(to bottom, rgba(5, 5, 5, 0.8) 0, transparent 26%, transparent 72%, rgba(5, 5, 5, 0.7) 100%);
   pointer-events: none;
 }
 
@@ -820,7 +820,7 @@
 }
 
 .wave-label {
-  color: #f5f2fa;
+  color: var(--cream);
   font: 9px var(--font-code);
   letter-spacing: 1.5px;
 }
@@ -835,11 +835,11 @@
   place-items: center;
   width: 32px;
   height: 32px;
-  border: 1px solid #ffffff2e;
+  border: 1px solid rgba(236, 230, 220, 0.18);
   border-radius: 50%;
-  background: #05060e80;
+  background: rgba(5, 5, 5, 0.5);
   backdrop-filter: blur(8px);
-  color: #fff;
+  color: var(--cream);
   cursor: pointer;
   transition: background 0.25s ease, border-color 0.25s ease;
 
@@ -854,12 +854,12 @@
   }
 
   &:hover {
-    border-color: #9875f5aa;
-    background: #9875f533;
+    border-color: rgba(var(--accent-primary-rgb), 0.67);
+    background: rgba(var(--accent-primary-rgb), 0.2);
   }
 
   &:focus-visible {
-    outline: 2px solid var(--accent-cyan);
+    outline: 2px solid var(--accent-primary);
     outline-offset: 2px;
   }
 }
@@ -870,13 +870,13 @@
   right: 0;
   bottom: 0;
   height: 3px;
-  background: #ffffff24;
+  background: rgba(236, 230, 220, 0.14);
 }
 
 .wave-progress-fill {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-neon));
   transition: width 0.25s linear;
 }
 
@@ -887,8 +887,8 @@
   width: 26px;
   height: 26px;
   margin: -13px 0 0 -13px;
-  border: 2px solid #ffffff30;
-  border-top-color: var(--accent-cyan);
+  border: 2px solid rgba(236, 230, 220, 0.2);
+  border-top-color: var(--accent-primary);
   border-radius: 50%;
   opacity: 0;
   transition: opacity 0.2s ease;
@@ -909,7 +909,7 @@
   inset: 0;
   display: grid;
   place-items: center;
-  color: #f0a3bb;
+  color: #F29AD9;
   font: 10px var(--font-code);
   letter-spacing: 1.5px;
 }

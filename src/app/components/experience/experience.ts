@@ -110,50 +110,107 @@ export class Experience implements AfterViewInit, OnDestroy {
     },
   ];
 
-  // IMAGES: put your files in  public/achievements/  and write the path WITHOUT "public",
-  // for example  image: 'achievements/certificate-1.jpg'
-  // (older Angular projects: put them in src/assets/achievements/ and use 'assets/achievements/...')
-  // Leave image: '' to show a placeholder. Copy an item block to add more.
+  // Image paths are relative to public/.
   protected readonly groups: GalleryGroup[] = [
     {
       label: 'ACHIEVEMENTS & CERTIFICATES',
-      title: 'Achievements & certificates',
-      description: '[One short line about this collection.]',
-      noun: 'CERTIFICATES',
+      title: 'Certificates, badges & achievements',
+      description: 'A curated glimpse of selected certificates, badges, and recognition earned along the way.',
+      noun: 'ITEMS',
       icon: ICON_AWARD,
       items: [
         {
-          title: '[Certificate or achievement name]',
-          description: '[Short description: what it is and why it matters.]',
-          meta: '[Issuer · Year]',
-          image: '',
+          title: 'Certificate 1',
+          description: '',
+          meta: 'Certificate',
+          image: 'images/achivmentsimage/c%20(1).png',
         },
         {
-          title: '[Certificate or achievement name]',
-          description: '[Short description: what it is and why it matters.]',
-          meta: '[Issuer · Year]',
-          image: '',
+          title: 'Certificate 2',
+          description: '',
+          meta: 'Certificate',
+          image: 'images/achivmentsimage/c%20(2).png',
+        },
+        {
+          title: 'Certificate 3',
+          description: '',
+          meta: 'Certificate',
+          image: 'images/achivmentsimage/c%20(3).png',
+        },
+        {
+          title: 'Certificate 4',
+          description: '',
+          meta: 'Certificate',
+          image: 'images/achivmentsimage/c%20(4).png',
+        },
+        {
+          title: 'Certificate 5',
+          description: '',
+          meta: 'Certificate',
+          image: 'images/achivmentsimage/c%20(5).png',
+        },
+        {
+          title: 'Certificate 6',
+          description: '',
+          meta: 'Certificate',
+          image: 'images/achivmentsimage/c%20(6).png',
+        },
+        {
+          title: 'Badge 1',
+          description: '',
+          meta: 'Badge',
+          image: 'images/achivmentsimage/b%20(1).png',
+        },
+        {
+          title: 'Badge 2',
+          description: '',
+          meta: 'Badge',
+          image: 'images/achivmentsimage/b%20(2).png',
+        },
+        {
+          title: 'Badge 3',
+          description: '',
+          meta: 'Badge',
+          image: 'images/achivmentsimage/b%20(3).png',
+        },
+        {
+          title: 'Hackathon win',
+          description: 'Award for winning a hackathon.',
+          meta: 'Hackathon · Award',
+          image: 'images/achivmentsimage/e%20(3).jpeg',
         },
       ],
     },
     {
       label: 'EVENTS & CLUB ACTIVITIES',
       title: 'Events & club activities',
-      description: '[One short line about this collection.]',
+      description: 'A glimpse into a few events and club moments that have been part of my journey.',
       noun: 'MOMENTS',
       icon: ICON_CALENDAR,
       items: [
         {
-          title: '[Event or activity name]',
-          description: '[Short description: what you did and what you took from it.]',
-          meta: '[Place · Year]',
-          image: '',
+          title: 'Event photo 1',
+          description: '',
+          meta: 'Event & club activities',
+          image: 'images/achivmentsimage/e%20(1).jpeg',
         },
         {
-          title: '[Event or activity name]',
-          description: '[Short description: what you did and what you took from it.]',
-          meta: '[Place · Year]',
-          image: '',
+          title: 'Event photo 2',
+          description: '',
+          meta: 'Event & club activities',
+          image: 'images/achivmentsimage/e%20(2).jpeg',
+        },
+        {
+          title: 'Event photo 4',
+          description: '',
+          meta: 'Event & club activities',
+          image: 'images/achivmentsimage/e%20(4).jpeg',
+        },
+        {
+          title: 'Event photo 5',
+          description: '',
+          meta: 'Event & club activities',
+          image: 'images/achivmentsimage/e%20(5).jpeg',
         },
       ],
     },

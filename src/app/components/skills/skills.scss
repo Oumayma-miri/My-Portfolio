@@ -1,4 +1,3 @@
-
 .skills-section {
   position: relative;
   padding: 110px 10%;
@@ -12,7 +11,7 @@
   height: 450px;
   top: 15%;
   right: -250px;
-  background: radial-gradient(circle, #9875f510, transparent 70%);
+  background: radial-gradient(circle, rgba(var(--accent-neon-rgb), 0.08), transparent 70%);
   pointer-events: none;
 }
 
@@ -24,7 +23,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--accent-cyan);
+    color: var(--accent-primary);
     font: 11px var(--font-code);
     letter-spacing: 2px;
   }
@@ -33,8 +32,8 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: var(--accent-cyan);
-    box-shadow: 0 0 12px var(--accent-cyan);
+    background: var(--accent-neon);
+    box-shadow: 0 0 12px var(--accent-neon);
   }
 
   h2 {
@@ -43,7 +42,7 @@
     letter-spacing: -2px;
 
     span {
-      color: var(--accent-purple);
+      color: var(--accent-primary);
     }
   }
 
@@ -72,10 +71,10 @@
   flex-direction: column;
   padding: 23px 16px;
   min-height: 390px;
-  background: linear-gradient(145deg, #171a2d, #111426);
-  border: 1px solid #ffffff12;
+  background: linear-gradient(145deg, #181416, #0F0D0E);
+  border: 1px solid rgba(236, 230, 220, 0.09);
   border-radius: 16px;
-  box-shadow: 0 15px 45px #00000018;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
 }
 
 .sidebar-heading {
@@ -88,7 +87,7 @@
 }
 
 .sidebar-status {
-  color: #70d6a5;
+  color: var(--accent-primary);
   font-size: 9px;
 }
 
@@ -120,31 +119,31 @@
   transition: 0.3s ease;
 
   &:hover {
-    color: white;
-    background: #ffffff08;
-    border-color: #ffffff12;
+    color: var(--text-primary);
+    background: rgba(236, 230, 220, 0.03);
+    border-color: rgba(236, 230, 220, 0.09);
   }
 
   &.active {
-    color: white;
-    background: linear-gradient(100deg, #9875f526, #9875f508);
-    border-color: #9875f54d;
-    box-shadow: inset 3px 0 var(--accent-purple);
+    color: var(--text-primary);
+    background: linear-gradient(100deg, rgba(var(--accent-primary-rgb), 0.18), rgba(var(--accent-primary-rgb), 0.03));
+    border-color: rgba(var(--accent-primary-rgb), 0.3);
+    box-shadow: inset 3px 0 var(--accent-primary);
 
     .category-number {
-      color: var(--accent-cyan);
+      color: var(--accent-primary);
     }
 
     .category-count {
-      color: white;
-      background: #9875f530;
+      color: var(--text-primary);
+      background: rgba(var(--accent-primary-rgb), 0.22);
     }
   }
 }
 
 .category-number {
   font: 10px var(--font-code);
-  color: #77758e;
+  color: #7D766E;
 }
 
 .category-name {
@@ -160,7 +159,7 @@
   height: 23px;
   padding: 0 5px;
   border-radius: 6px;
-  background: #ffffff09;
+  background: rgba(236, 230, 220, 0.04);
   color: var(--text-muted);
   font: 10px var(--font-code);
 }
@@ -175,14 +174,15 @@
   font-size: 10px;
 }
 
+/* status dots: neon pink instead of green */
 .pulse-dot,
 .level-dot {
   width: 7px;
   height: 7px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: #70d6a5;
-  box-shadow: 0 0 10px #70d6a577;
+  background: var(--accent-neon);
+  box-shadow: 0 0 10px rgba(var(--accent-neon-rgb), 0.55);
 }
 
 /* MAIN CONTENT */
@@ -190,9 +190,9 @@
 .skills-main {
   min-width: 0;
   padding: 25px;
-  border: 1px solid #ffffff12;
+  border: 1px solid rgba(236, 230, 220, 0.09);
   border-radius: 16px;
-  background: linear-gradient(145deg, #171a2dba, #111426dd);
+  background: linear-gradient(145deg, rgba(24, 20, 22, 0.73), rgba(15, 13, 14, 0.87));
   backdrop-filter: blur(15px);
 }
 
@@ -210,7 +210,7 @@
 }
 
 .eyebrow {
-  color: var(--accent-cyan);
+  color: var(--accent-primary);
   font: 9px var(--font-code);
   letter-spacing: 1.5px;
 }
@@ -247,9 +247,9 @@
   min-height: 120px;
   padding: 16px;
   overflow: hidden;
-  border: 1px solid #ffffff12;
+  border: 1px solid rgba(236, 230, 220, 0.09);
   border-radius: 12px;
-  background: #ffffff05;
+  background: rgba(236, 230, 220, 0.025);
   color: var(--text-primary);
   text-align: left;
   cursor: pointer;
@@ -261,14 +261,14 @@
     position: absolute;
     inset: 0;
     opacity: 0;
-    background: radial-gradient(circle at top left, #9875f51b, transparent 75%);
+    background: radial-gradient(circle at top left, rgba(var(--accent-neon-rgb), 0.11), transparent 75%);
     transition: opacity 0.3s ease;
   }
 
   &:hover {
     transform: translateY(-5px);
-    border-color: #9875f577;
-    background: #9875f50b;
+    border-color: rgba(var(--accent-primary-rgb), 0.5);
+    background: rgba(var(--accent-primary-rgb), 0.05);
   }
 
   &:hover::before,
@@ -277,9 +277,9 @@
   }
 
   &.selected {
-    border-color: #9875f5a0;
-    background: #9875f516;
-    box-shadow: 0 8px 25px #9875f510;
+    border-color: rgba(var(--accent-primary-rgb), 0.63);
+    background: rgba(var(--accent-primary-rgb), 0.09);
+    box-shadow: 0 8px 25px rgba(var(--accent-neon-rgb), 0.1);
   }
 }
 
@@ -290,9 +290,9 @@
   place-items: center;
   width: 43px;
   height: 43px;
-  border: 1px solid #ffffff12;
+  border: 1px solid rgba(236, 230, 220, 0.09);
   border-radius: 11px;
-  background: #ffffff08;
+  background: rgba(236, 230, 220, 0.03);
 
   img {
     width: 27px;
@@ -316,7 +316,7 @@
   position: absolute;
   top: 15px;
   right: 15px;
-  color: var(--accent-purple);
+  color: var(--accent-primary);
   font-size: 14px;
   opacity: 0;
   transform: translate(-3px, 3px);
@@ -340,9 +340,9 @@
   margin-top: 20px;
   padding: 23px;
   overflow: hidden;
-  border: 1px solid #9875f538;
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.22);
   border-radius: 13px;
-  background: linear-gradient(110deg, #54243f35, #9875f512 65%, #70d6f50a);
+  background: linear-gradient(110deg, rgba(90, 28, 75, 0.3), rgba(var(--accent-primary-rgb), 0.08) 65%, rgba(236, 230, 220, 0.03));
   animation: spotlight-in 0.35s ease;
 }
 
@@ -353,7 +353,7 @@
   right: -60px;
   top: -100px;
   border-radius: 50%;
-  background: #9875f51a;
+  background: rgba(var(--accent-neon-rgb), 0.13);
   filter: blur(35px);
   pointer-events: none;
 }
@@ -366,9 +366,9 @@
   width: 65px;
   height: 65px;
   flex-shrink: 0;
-  border: 1px solid #ffffff20;
+  border: 1px solid rgba(236, 230, 220, 0.13);
   border-radius: 15px;
-  background: #ffffff0d;
+  background: rgba(236, 230, 220, 0.05);
 
   img {
     width: 37px;
@@ -396,16 +396,17 @@
   }
 }
 
+/* level badge: pink instead of green */
 .skill-level {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   margin-top: 12px;
   padding: 6px 9px;
-  border: 1px solid #70d6a52b;
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.3);
   border-radius: 20px;
-  background: #70d6a50d;
-  color: #a7e9c7;
+  background: rgba(var(--accent-primary-rgb), 0.07);
+  color: var(--accent-primary);
   font-size: 10px;
 }
 
@@ -420,7 +421,7 @@
   display: flex;
   gap: 5px;
   align-self: flex-end;
-  color: #ffffff55;
+  color: rgba(236, 230, 220, 0.35);
   font: 10px var(--font-code);
 }
 
@@ -432,9 +433,9 @@
   gap: 18px;
   margin-top: 20px;
   padding: 20px 23px;
-  border: 1px solid #ffffff12;
+  border: 1px solid rgba(236, 230, 220, 0.09);
   border-radius: 12px;
-  background: #111426a8;
+  background: rgba(15, 13, 14, 0.66);
 }
 
 .code-symbol {
@@ -444,8 +445,8 @@
   height: 43px;
   flex-shrink: 0;
   border-radius: 10px;
-  background: #9875f51b;
-  color: var(--accent-purple);
+  background: rgba(var(--accent-primary-rgb), 0.11);
+  color: var(--accent-primary);
   font: 600 17px var(--font-code);
 }
 
@@ -453,7 +454,7 @@
   flex: 1;
 
   .code-title {
-    color: var(--accent-cyan);
+    color: var(--accent-primary);
     font: 9px var(--font-code);
     letter-spacing: 1.5px;
   }
@@ -467,7 +468,7 @@
 }
 
 .code-decoration {
-  color: #9875f577;
+  color: rgba(var(--accent-primary-rgb), 0.45);
   font: 10px var(--font-code);
 }
 
@@ -595,16 +596,12 @@
 }
 /* =====================================================
    SKILLS ENHANCEMENTS  (v4)
-   1. DELETE the block you pasted last time at the end of skills.scss
-   2. Paste this one at the very END of the file
-   3. Optional clean-up: the old .skills-sidebar, .sidebar-*, .category-button,
-      .category-number, .category-name, .category-count, .pulse-dot and
-      .orbit-node styles are no longer used
    ===================================================== */
 
 /* ---------- Heading accent: slow moving gradient ---------- */
 .skills-heading h2 span {
-  background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan), var(--accent-purple));
+  /* orchid with a cream shine; first and last stop match so the loop is seamless */
+  background: linear-gradient(90deg, var(--accent-primary), var(--cream), var(--accent-primary));
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -652,9 +649,9 @@
   padding: 5px;
   overflow-x: auto;
   scrollbar-width: none;
-  border: 1px solid #ffffff12;
+  border: 1px solid rgba(236, 230, 220, 0.09);
   border-radius: 12px;
-  background: #ffffff06;
+  background: rgba(236, 230, 220, 0.025);
 
   &::-webkit-scrollbar {
     display: none;
@@ -667,10 +664,10 @@
   bottom: 5px;
   left: 0;
   width: 0;
-  border: 1px solid #9875f55a;
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.35);
   border-radius: 8px;
-  background: linear-gradient(100deg, #9875f533, #9875f512);
-  box-shadow: 0 0 22px #9875f51f;
+  background: linear-gradient(100deg, rgba(var(--accent-primary-rgb), 0.2), rgba(var(--accent-primary-rgb), 0.07));
+  box-shadow: 0 0 22px rgba(var(--accent-neon-rgb), 0.14);
   pointer-events: none;
 }
 
@@ -694,24 +691,24 @@
   transition: color 0.25s ease;
 
   &:hover {
-    color: white;
+    color: var(--text-primary);
   }
 
   &.active {
-    color: white;
+    color: var(--text-primary);
 
     .tab-icon {
-      color: var(--accent-cyan);
+      color: var(--accent-primary);
     }
 
     .tab-count {
-      color: white;
-      background: #9875f540;
+      color: var(--text-primary);
+      background: rgba(var(--accent-primary-rgb), 0.25);
     }
   }
 
   &:focus-visible {
-    outline: 2px solid var(--accent-cyan);
+    outline: 2px solid var(--accent-primary);
     outline-offset: -2px;
   }
 }
@@ -735,7 +732,7 @@
   height: 20px;
   padding: 0 5px;
   border-radius: 6px;
-  background: #ffffff0a;
+  background: rgba(236, 230, 220, 0.04);
   color: var(--text-muted);
   font: 10px var(--font-code);
   transition: background 0.25s ease, color 0.25s ease;
@@ -778,7 +775,7 @@
 
 /* cursor-following glow (position set from skills.ts) */
 .skill-card::before {
-  background: radial-gradient(160px circle at var(--mx, 25%) var(--my, 0%), #9875f52e, transparent 75%);
+  background: radial-gradient(160px circle at var(--mx, 25%) var(--my, 0%), rgba(var(--accent-neon-rgb), 0.18), transparent 75%);
 }
 
 /* ---------- Spotlight: vertical card on the right ---------- */
@@ -854,7 +851,7 @@
 
 .orbit-ring {
   position: absolute;
-  border: 1px solid #ffffff0f; /* faint track */
+  border: 1px solid rgba(236, 230, 220, 0.06); /* faint track */
   border-radius: 50%;
 
   /* comet tail */
@@ -883,8 +880,9 @@
   }
 }
 
+/* inner ring cream, outer ring orchid (same pairing as hero and contact) */
 .orbit-ring-one {
-  --ring-color: var(--accent-cyan);
+  --ring-color: var(--cream);
   width: 108px;
   height: 108px;
   top: -54px;
@@ -893,7 +891,7 @@
 }
 
 .orbit-ring-two {
-  --ring-color: var(--accent-purple);
+  --ring-color: var(--accent-primary);
   width: 144px;
   height: 144px;
   top: -72px;
@@ -954,7 +952,6 @@
 }
 /* =====================================================
    SKILLS  v5  -  more skills
-   Paste this at the very END of skills.scss (after the v4 block).
    ===================================================== */
 
 /* ---------- Tabs: wrap onto a second row instead of scrolling sideways ---------- */
@@ -984,7 +981,7 @@
   width: 20px;
   height: 20px;
   fill: none;
-  stroke: var(--accent-purple);
+  stroke: var(--accent-primary);
   stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -998,26 +995,26 @@
 .spotlight-logo .logo-icon {
   width: 34px;
   height: 34px;
-  stroke: var(--accent-cyan);
+  stroke: var(--cream);
 }
 
 /* dark logos (GitHub, Unity, Three.js) sit on a light tile so they stay visible */
 .logo-container.light,
 .spotlight-logo.light {
-  border-color: #ffffff40;
-  background: #f5f2faeb;
+  border-color: rgba(236, 230, 220, 0.25);
+  background: rgba(236, 230, 220, 0.92);
 }
 
-/* ---------- Level badge: softer color for learning / coursework / planned ---------- */
+/* ---------- Level badge: cream tone for learning / coursework / planned ---------- */
 
 .skill-level[data-tone='soft'] {
-  border-color: #70d6f52b;
-  background: #70d6f50d;
-  color: #9fe3f7;
+  border-color: rgba(236, 230, 220, 0.2);
+  background: rgba(236, 230, 220, 0.06);
+  color: #D9D1C4;
 
   .level-dot {
-    background: var(--accent-cyan);
-    box-shadow: 0 0 10px #70d6f577;
+    background: var(--cream);
+    box-shadow: 0 0 10px rgba(236, 230, 220, 0.4);
   }
 }
 
@@ -1029,13 +1026,13 @@
   gap: 16px;
   margin-top: 20px;
   padding-top: 18px;
-  border-top: 1px solid #ffffff0f;
+  border-top: 1px solid rgba(236, 230, 220, 0.07);
 }
 
 .also-label {
   flex-shrink: 0;
   padding-top: 6px;
-  color: var(--accent-purple);
+  color: var(--accent-primary);
   font: 9px var(--font-code);
   letter-spacing: 1.5px;
 }
@@ -1048,17 +1045,17 @@
 
 .also-chip {
   padding: 5px 11px;
-  border: 1px solid #ffffff14;
+  border: 1px solid rgba(236, 230, 220, 0.09);
   border-radius: 20px;
-  background: #ffffff05;
+  background: rgba(236, 230, 220, 0.03);
   color: var(--text-muted);
   font-size: 11px;
   transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
 
   &:hover {
-    border-color: #9875f577;
-    background: #9875f510;
-    color: #fff;
+    border-color: rgba(var(--accent-primary-rgb), 0.5);
+    background: rgba(var(--accent-primary-rgb), 0.07);
+    color: var(--text-primary);
   }
 }
 

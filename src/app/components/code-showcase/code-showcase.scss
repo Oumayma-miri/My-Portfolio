@@ -4,6 +4,14 @@
   overflow: hidden;
 }
 
+.cs-flower {
+  position: absolute;
+  top: 36px;
+  right: 8%;
+  z-index: 0;
+  opacity: 0.45;
+}
+
 .cs-section::before {
   content: '';
   position: absolute;
@@ -19,6 +27,7 @@
 
 .cs-heading {
   position: relative;
+  z-index: 1;
   margin-bottom: 40px;
 
   .section-label {
@@ -80,6 +89,8 @@
 /* LAYOUT */
 
 .cs-grid {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
   gap: 24px;
@@ -459,6 +470,11 @@
 @media (max-width: 750px) {
   .cs-section {
     padding: 75px 6%;
+  }
+
+  .cs-flower {
+    right: -24px;
+    opacity: 0.3;
   }
 
   .cs-side {

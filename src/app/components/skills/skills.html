@@ -1,69 +1,51 @@
 <section class="skills-section" id="skills" #skillsRoot>
 
-  <!-- SECTION HEADING -->
-  <div class="skills-heading">
-    <div class="section-label">
-      <span class="label-dot"></span>
-      // MY TECH STACK
-    </div>
+  <header class="skills-heading">
+    <h2>My digital toolkit</h2>
+    <p>The technologies and methods I use to build, experiment and solve problems.</p>
+  </header>
 
-    <h2>My digital <span>toolkit.</span></h2>
+  <div class="skills-board">
 
-    <p>
-      A collection of technologies I use to build, experiment,
-      solve problems and bring ideas to life.
-    </p>
-  </div>
+    <div class="skills-panel">
 
-  <!-- MAIN WORKSPACE -->
-  <div class="skills-workspace">
+      <!-- Categories -->
+      <div
+        class="skills-tabs"
+        role="tablist"
+        aria-label="Skill categories"
+        #tabsEl
+        (keydown)="onTabKeydown($event)">
+        @for (category of categories; track category.name) {
+          <button
+            type="button"
+            role="tab"
+            class="tab"
+            [class.active]="activeCategory() === category.name"
+            [attr.aria-selected]="activeCategory() === category.name"
+            [attr.tabindex]="activeCategory() === category.name ? 0 : -1"
+            (click)="selectCategory(category.name)">
+            <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path [attr.d]="category.icon" />
+            </svg>
+            <span>{{ category.name }}</span>
+          </button>
+        }
+        <span class="tab-indicator" #indicator aria-hidden="true"></span>
+      </div>
 
-    <div class="skills-main">
-
-      <!-- LEFT: switcher + technologies -->
-      <div class="skills-panel">
-
-        <div class="skills-tabs" role="tablist" aria-label="Skill categories">
-          <span class="tab-indicator" aria-hidden="true"></span>
-
-          @for (category of categories; track category.name) {
-            <button
-              type="button"
-              role="tab"
-              class="tab"
-              [class.active]="activeCategory() === category.name"
-              [attr.aria-selected]="activeCategory() === category.name"
-              (click)="selectCategory(category.name)">
-
-              <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path [attr.d]="category.icon" />
-              </svg>
-              <span class="tab-name">{{ category.name }}</span>
-              <span class="tab-count">{{ totalOf(category) }}</span>
-
-            </button>
-          }
-        </div>
+      <!-- Category content (this block cross-fades when the category changes) -->
+      <div class="panel-body" role="tabpanel">
 
         <div class="skills-topline">
-          <div>
-            <span class="eyebrow">CURRENT COLLECTION</span>
-            <h3>{{ currentCategory.name }}</h3>
-          </div>
-
-          <span class="tech-count">
-            {{ totalOf(currentCategory) }} SKILLS
-          </span>
+          <h3>{{ currentCategory.name }}</h3>
+          <span class="tech-count">{{ totalOf(currentCategory) }} skills</span>
         </div>
 
-        <p class="category-description">
-          {{ currentCategory.description }}
-        </p>
+        <p class="category-description">{{ currentCategory.description }}</p>
 
         <div class="skills-grid">
-
-          @for (skill of visibleSkills; track skill.name) {
-
+          @for (skill of currentCategory.skills; track skill.name) {
             <button
               type="button"
               class="skill-card"
@@ -73,12 +55,7 @@
 
               <span class="logo-container" [class.light]="skill.onLight && showLogo(skill)">
                 @if (showLogo(skill)) {
-                  <img
-                    [src]="skill.logo"
-                    [alt]="skill.name + ' logo'"
-                    loading="lazy"
-                    (error)="onLogoError(skill)"
-                  />
+                  <img [src]="skill.logo" [alt]="skill.name + ' logo'" loading="lazy" (error)="onLogoError(skill)" />
                 } @else {
                   <svg class="logo-icon" viewBox="0 0 24 24" aria-hidden="true">
                     <path [attr.d]="iconOf(skill)" />
@@ -90,20 +67,13 @@
                 <span class="skill-name">{{ skill.name }}</span>
                 <span class="skill-level-text">{{ skill.level }}</span>
               </span>
-
-              <span class="skill-card-arrow">↗</span>
-
             </button>
-
           }
-
         </div>
 
-        <!-- SUPPORTING SKILLS (small chips) -->
         @if (currentCategory.also; as also) {
           <div class="also">
-            <span class="also-label">ALSO</span>
-
+            <span class="also-label">Also</span>
             <div class="also-chips">
               @for (item of also; track item) {
                 <span class="also-chip">{{ item }}</span>
@@ -111,95 +81,32 @@
             </div>
           </div>
         }
-
       </div>
+    </div>
 
-      <!-- RIGHT: selected technology -->
-      <div class="skill-spotlight">
-
-        <div class="spotlight-decoration"></div>
-
-        <div class="spotlight-stage">
-
-          <!-- ORBITING RINGS (pure CSS animation, always running) -->
-          <div class="skills-orbit" aria-hidden="true">
-            <span class="orbit-ring orbit-ring-one"></span>
-            <span class="orbit-ring orbit-ring-two"></span>
-          </div>
-
-          <div class="spotlight-logo" [class.light]="selectedSkill().onLight && showLogo(selectedSkill())">
-            @if (showLogo(selectedSkill())) {
-              <img
-                [src]="selectedSkill().logo"
-                [alt]="selectedSkill().name + ' logo'"
-                (error)="onLogoError(selectedSkill())"
-              />
-            } @else {
-              <svg class="logo-icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path [attr.d]="iconOf(selectedSkill())" />
-              </svg>
-            }
-          </div>
-
+    <!-- Selected skill -->
+    <aside class="skill-spotlight" aria-live="polite">
+      <div class="spotlight-inner">
+        <div class="spotlight-logo" [class.light]="selectedSkill().onLight && showLogo(selectedSkill())">
+          @if (showLogo(selectedSkill())) {
+            <img [src]="selectedSkill().logo" [alt]="selectedSkill().name + ' logo'" (error)="onLogoError(selectedSkill())" />
+          } @else {
+            <svg class="logo-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path [attr.d]="iconOf(selectedSkill())" />
+            </svg>
+          }
         </div>
 
         <div class="spotlight-content">
-
-          <span class="eyebrow">
-            SELECTED SKILL
-          </span>
-
-          <h4>
-            {{ selectedSkill().name }}
-          </h4>
-
-          <p>
-            {{ selectedSkill().description }}
-          </p>
-
+          <h4>{{ selectedSkill().name }}</h4>
+          <p>{{ selectedSkill().description }}</p>
           <span class="skill-level" [attr.data-tone]="tone(selectedSkill().level)">
             <span class="level-dot"></span>
             {{ selectedSkill().level }}
           </span>
-
         </div>
-
-        <div class="spotlight-index">
-          <span>01</span>
-          <span>/</span>
-          <span>
-            {{ visibleSkills.length.toString().padStart(2, '0') }}
-          </span>
-        </div>
-
       </div>
-
-    </div>
-
-  </div>
-
-  <!-- BOTTOM DEVELOPER MESSAGE -->
-  <div class="skills-code-strip">
-
-    <span class="code-symbol">
-      &lt;/&gt;
-    </span>
-
-    <div class="code-message">
-
-      <span class="code-title">
-        MY APPROACH
-      </span>
-
-      <p>
-        Learn by doing. Build with curiosity. Improve with every project.
-      </p>
-
-    </div>
-
-    <span class="code-decoration">
-      const growth = 'continuous';
-    </span>
+    </aside>
 
   </div>
 

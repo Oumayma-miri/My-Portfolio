@@ -33,3 +33,26 @@
   bottom: 0;
   left: -150px;
 }
+
+.flower {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.flower-top {
+  top: 40px;     // just under the navbar
+  left: 0%;
+}
+
+.flower-bottom {
+  bottom: 100px;  // sits behind the footer / contact area
+  right: 6%;
+}
+
+
+@media (max-width: 768px) {
+  .flower { opacity: 0.5; }
+  .flower-top { left: -40px; }
+  .flower-bottom { right: -40px; }
+}

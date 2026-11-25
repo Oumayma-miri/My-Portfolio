@@ -10,6 +10,7 @@ import {
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { GlowFlower } from '../glow-flower/glow-flower';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -110,6 +111,7 @@ function toLines(code: string, lang: Lang): CodeLine[] {
 @Component({
   selector: 'app-code-showcase',
   standalone: true,
+  imports: [GlowFlower],
   templateUrl: './code-showcase.html',
   styleUrl: './code-showcase.scss',
 })

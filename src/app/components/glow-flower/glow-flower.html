@@ -1,0 +1,10 @@
+<svg
+  viewBox="0 0 400 400"
+  [style.width.px]="size()"
+  [style.height.px]="size()"
+  [style.--duration.s]="duration()"
+  [style.--delay.s]="delay()"
+>
+  <path class="base" [attr.d]="path" pathLength="1" />
+  <path class="glow" [attr.d]="path" pathLength="1" />
+</svg>

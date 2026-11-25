@@ -1,6 +1,5 @@
 
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 
 import { Navbar } from './components/navbar/navbar';
 import { Hero } from './components/hero/hero';
@@ -11,12 +10,15 @@ import { About } from './components/about/about';
 import {Experience} from './components/experience/experience';
 import {CodeShowcase} from './components/code-showcase/code-showcase';
 import { Contact } from './components/contact/contact';
+import { GlowFlower } from './components/glow-flower/glow-flower';
+
+
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Navbar, Hero, Terminal, Projects, Skills, About, Experience, CodeShowcase, Contact],
+  imports: [Navbar, Hero, Terminal, Projects, Skills, About, Experience, CodeShowcase, Contact, GlowFlower],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

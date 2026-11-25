@@ -1,33 +1,17 @@
-
 <main class="portfolio">
   <div class="background-glow glow-one"></div>
   <div class="background-glow glow-two"></div>
 
+  <app-glow-flower class="flower flower-top" [size]="180" />
+  <app-glow-flower class="flower flower-bottom" [size]="220" [delay]="-3" />
+
   <app-navbar />
-
   <app-hero />
-
-  <app-about /> 
-
+  <app-about />
   <app-terminal />
-
-  
-
   <app-projects />
-  
   <app-skills />
-
   <app-experience />
-
   <app-code-showcase />
-  
   <app-contact />
-
-
-  
-
-
-
-
-  <router-outlet />
 </main>

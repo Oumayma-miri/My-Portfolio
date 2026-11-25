@@ -45,29 +45,31 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 5px;
   text-decoration: none;
   flex-shrink: 0;
 }
 
-.logo-mark {
-  font: 700 23px var(--font-heading);
-  letter-spacing: -1.5px;
-  color: var(--text-primary);
-  transition: color 0.25s ease;
+.logo-image {
+  display: block;
+  width: 48px;
+  height: 44px;
+  overflow: hidden;
+  border-radius: 9px;
+  transition: transform 0.25s ease, filter 0.25s ease;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.5);
+  }
 }
 
-.logo-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent-neon);
-  box-shadow: 0 0 10px rgba(var(--accent-neon-rgb), 0.75);
-  margin-top: 12px;
-}
-
-.logo:hover .logo-mark {
-  color: var(--accent-primary);
+.logo:hover .logo-image {
+  transform: scale(1.04);
+  filter: drop-shadow(0 0 7px rgba(var(--accent-neon-rgb), 0.35));
 }
 
 /* NAVIGATION LINKS */
@@ -454,10 +456,6 @@
     top: 14px;
     width: calc(100% - 28px);
     padding: 10px 14px;
-  }
-
-  .logo-mark {
-    font-size: 21px;
   }
 
   .contact-btn {

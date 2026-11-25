@@ -195,14 +195,14 @@ export class Contact implements AfterViewInit, OnDestroy {
     event.preventDefault();
     if (!this.check()) return;
 
-    window.location.href = this.mailtoHref();
+    window.open(this.gmailHref(), '_blank', 'noopener,noreferrer');
     this.opened.set(true);
   }
 
-  protected openGmail(): void {
+  protected openEmailApp(): void {
     if (!this.check()) return;
 
-    window.open(this.gmailHref(), '_blank', 'noopener');
+    window.location.href = this.mailtoHref();
     this.opened.set(true);
   }
 

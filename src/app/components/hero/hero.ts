@@ -7,7 +7,6 @@ import {
   inject,
   signal,
   ViewChild,
-  HostListener,
 } from '@angular/core';
 
 import { interval } from 'rxjs';
@@ -20,12 +19,6 @@ const PAD_X = 60;
 const PAD_Y = 50;
 // Pulling past the limit feels elastic: only this share of the extra distance is followed
 const RESISTANCE = 0.25;
-
-// ---------- WAVE VIDEO SETTINGS ----------
-// Put your video in  public/videos/wave.mp4  (older Angular: src/assets/videos/ and use 'assets/videos/wave.mp4')
-const WAVE_SRC = 'videos/wave.mp4';
-// Set to false if your video has no sound (the mute button is then hidden)
-const WAVE_HAS_SOUND = true;
 
 const clamp = (v: number, min: number, max: number): number => Math.min(max, Math.max(min, v));
 const rubber = (v: number, min: number, max: number): number =>
@@ -58,23 +51,10 @@ export class Hero implements AfterViewInit, OnDestroy {
   // true once the card has been dragged away from its original place
   protected readonly moved = signal(false);
 
-  // ---------- wave video state ----------
-  @ViewChild('waveVideo') private waveVideo?: ElementRef<HTMLVideoElement>;
+  @ViewChild('imageDialog') private imageDialog?: ElementRef<HTMLDialogElement>;
+  protected readonly imageOpen = signal(false);
 
-  protected readonly waveSrc = WAVE_SRC;
-  protected readonly waveHasSound = WAVE_HAS_SOUND;
-  protected readonly waveOpen = signal(false);
-  protected readonly waveBuffering = signal(false);
-  protected readonly waveError = signal(false);
-  protected readonly waveMuted = signal(false);
-  protected readonly waveWatched = signal(false); // stops the invitation pulse after the first play
-  protected readonly waveProgress = signal(0);
-
-  private wavePrepared = false;
-  private waveClosing = false;
-  private waveErrTimer?: ReturnType<typeof setTimeout>;
-  private waveOrigin = { x: 0, y: 0, start: 41, end: 500 };
-  private suppressClick = false; // a drag must not count as a click
+  private suppressClick = false; // a drag must not open the image viewer
 
   // ---------- drag state ----------
   private card: HTMLElement | null = null;
@@ -197,7 +177,6 @@ export class Hero implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearTimeout(this.tiltTimer);
-    clearTimeout(this.waveErrTimer);
 
     if (this.card) {
       this.card.removeEventListener('pointerdown', this.onDown);
@@ -342,7 +321,7 @@ export class Hero implements AfterViewInit, OnDestroy {
     d.dragging = false;
     clearTimeout(this.tiltTimer);
 
-    // the click that follows a drag must not open the video
+    // the click that follows a drag must not open the image viewer
     if (wasDragging) {
       this.suppressClick = true;
       setTimeout(() => (this.suppressClick = false), 0);
@@ -378,166 +357,22 @@ export class Hero implements AfterViewInit, OnDestroy {
     this.moveTags(x, y);
   };
 
-  // =====================================================
-  //  WAVE VIDEO
-  //  Click the photo: a circle grows out of it, fills the card and plays the video.
-  //  When the video ends (or on close / Esc) the circle shrinks back into the photo.
-  // =====================================================
+  protected openImage(): void {
+    const dialog = this.imageDialog?.nativeElement;
+    if (this.suppressClick || !dialog || dialog.open) return;
 
-  // starts loading the video as soon as the visitor shows interest (hover, focus or touch)
-  protected prepareWave(): void {
-    if (this.wavePrepared) return;
-    this.wavePrepared = true;
-
-    const video = this.waveVideo?.nativeElement;
-    if (video) {
-      video.preload = 'auto';
-      video.load();
-    }
+    dialog.showModal();
+    this.imageOpen.set(true);
   }
 
-  private waveCircle(radius: number): string {
-    return `circle(${radius}px at ${this.waveOrigin.x}px ${this.waveOrigin.y}px)`;
+  protected closeImage(): void {
+    const dialog = this.imageDialog?.nativeElement;
+    if (dialog?.open) dialog.close();
+    this.imageOpen.set(false);
   }
 
-  // finds where the photo sits inside the card, and how big the circle must grow to cover it
-  private measureWave(): void {
-    const card = this.card;
-    const avatar = card?.querySelector<HTMLElement>('.profile-avatar');
-    if (!card || !avatar) return;
-
-    const c = card.getBoundingClientRect();
-    const a = avatar.getBoundingClientRect();
-    const scale = c.width / card.offsetWidth || 1;
-
-    const x = (a.left + a.width / 2 - c.left) / scale;
-    const y = (a.top + a.height / 2 - c.top) / scale;
-    const w = card.offsetWidth;
-    const h = card.offsetHeight;
-
-    this.waveOrigin = {
-      x,
-      y,
-      start: a.width / scale / 2,
-      end: Math.hypot(Math.max(x, w - x), Math.max(y, h - y)) + 4,
-    };
-  }
-
-  protected openWave(): void {
-    if (this.suppressClick || this.waveOpen() || this.waveClosing || !this.card) return;
-
-    const wave = this.card.querySelector<HTMLElement>('.wave');
-    const video = this.waveVideo?.nativeElement;
-    if (!wave || !video) return;
-
-    this.prepareWave();
-    this.measureWave();
-
-    this.waveError.set(false);
-    this.waveBuffering.set(true);
-    this.waveProgress.set(0);
-    this.waveWatched.set(true);
-    this.waveOpen.set(true);
-
-    const controls = wave.querySelectorAll('.wave-bar, .wave-progress');
-
-    gsap.killTweensOf(wave);
-    gsap.killTweensOf(controls);
-    gsap.set(wave, { visibility: 'visible' });
-
-    if (this.reduceMotion()) {
-      gsap.set(wave, { clipPath: 'none' });
-      gsap.set(controls, { opacity: 1 });
-    } else {
-      gsap.fromTo(
-        wave,
-        { clipPath: this.waveCircle(this.waveOrigin.start) },
-        { clipPath: this.waveCircle(this.waveOrigin.end), duration: 0.75, ease: 'power3.inOut' },
-      );
-      gsap.fromTo(controls, { opacity: 0 }, { opacity: 1, duration: 0.4, delay: 0.45 });
-    }
-
-    video.currentTime = 0;
-    video.muted = this.waveMuted();
-
-    video.play().catch((err: unknown) => {
-      // the browser refused to play with sound: retry muted
-      if ((err as DOMException)?.name === 'NotAllowedError') {
-        video.muted = true;
-        this.waveMuted.set(true);
-        video.play().catch(() => undefined);
-      }
-    });
-  }
-
-  protected closeWave(): void {
-    if (!this.waveOpen() || this.waveClosing || !this.card) return;
-
-    const wave = this.card.querySelector<HTMLElement>('.wave');
-    const video = this.waveVideo?.nativeElement;
-    if (!wave) return;
-
-    this.waveClosing = true;
-    clearTimeout(this.waveErrTimer);
-    video?.pause();
-
-    const controls = wave.querySelectorAll('.wave-bar, .wave-progress');
-
-    const finish = (): void => {
-      gsap.set(wave, { visibility: 'hidden' });
-      if (video) video.currentTime = 0;
-      this.waveOpen.set(false);
-      this.waveProgress.set(0);
-      this.waveBuffering.set(false);
-      this.waveClosing = false;
-    };
-
-    if (this.reduceMotion()) {
-      finish();
-      return;
-    }
-
-    this.measureWave(); // the card may have been moved since it opened
-    gsap.killTweensOf(wave);
-    gsap.killTweensOf(controls);
-    gsap.to(controls, { opacity: 0, duration: 0.2 });
-    gsap.to(wave, {
-      clipPath: this.waveCircle(this.waveOrigin.start),
-      duration: 0.55,
-      ease: 'power3.inOut',
-      onComplete: finish,
-    });
-  }
-
-  protected togglePlay(): void {
-    const video = this.waveVideo?.nativeElement;
-    if (!video || this.suppressClick) return;
-    if (video.paused) video.play().catch(() => undefined);
-    else video.pause();
-  }
-
-  protected toggleMute(): void {
-    const video = this.waveVideo?.nativeElement;
-    this.waveMuted.update(m => !m);
-    if (video) video.muted = this.waveMuted();
-  }
-
-  protected onWaveTime(): void {
-    const video = this.waveVideo?.nativeElement;
-    if (video?.duration) this.waveProgress.set((video.currentTime / video.duration) * 100);
-  }
-
-  protected onWaveError(): void {
-    if (!this.waveOpen()) return;
-    this.waveBuffering.set(false);
-    this.waveError.set(true);
-    clearTimeout(this.waveErrTimer);
-    this.waveErrTimer = setTimeout(() => this.closeWave(), 1800);
-  }
-
-  @HostListener('document:keydown.escape')
-  protected onEscape(): void {
-    this.closeWave();
+  protected closeImageFromBackdrop(event: MouseEvent): void {
+    if (event.target === this.imageDialog?.nativeElement) this.closeImage();
   }
 
   // sends the card back to where it started
